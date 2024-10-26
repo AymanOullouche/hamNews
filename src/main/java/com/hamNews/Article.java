@@ -1,4 +1,4 @@
-package com.news;
+package com.hamNews;
 
 public class Article {
     private final String title;

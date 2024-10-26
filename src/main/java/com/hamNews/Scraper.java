@@ -1,4 +1,4 @@
-// package com.news;
+// package com.hamNews;
 
 // import java.io.IOException;
 
