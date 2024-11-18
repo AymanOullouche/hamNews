@@ -1,5 +1,6 @@
 package com.hamNews;
 
+import com.hamNews.Controler.ArticleController;
 import com.hamNews.Model.Article.*;
 
 import java.io.IOException;
@@ -7,30 +8,28 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        ArticleScraper articleScraper = new ArticleScraper();
-        ArticleContentFetcher contentFetcher = new ArticleContentFetcher();
-        ArticleStorage articleStorage = new ArticleStorage();
+        ArticleController articleController =new ArticleController();
 
         String gridUrl = "https://lematin.ma/nation"; // URL for the article grid
         String category = "nation";
-        int lastFetchedArticleId = articleStorage.getLastFetchedArticleIdByCategory(category);
+        int lastFetchedArticleId = articleController.getLastFetchedArticleIdByCategory(category);
 
         try {
             // Scrape articles from the grid
-            List<Article> articles = articleScraper.scrapeArticleGrid(gridUrl, lastFetchedArticleId);
+            List<Article> articles = articleController.scrapeArticleGrid(gridUrl, lastFetchedArticleId);
             boolean isFirstIteration = true;
 
             for (Article article : articles) {
                 // Fetch the content for the article
-                ArticleContent articleContent = contentFetcher.fetchContent(article.getUrl());
+                ArticleContent articleContent = articleController.fetchContent(article.getUrl());
 
                 // Store the article along with its content and published date
-                articleStorage.storeArticle(article, articleContent.getContent(), articleContent.getPublishDate(),
+                articleController.storeArticle(article, articleContent.getContent(), articleContent.getPublishDate(),
                         category);
 
                 if (isFirstIteration) {
-                    articleStorage.updateLastFetchedArticleByCategory(category,
-                            ArticleScraper.extractArticleIdFromUrl(article.getUrl()));
+                    articleController.updateLastFetchedArticleByCategory(category,
+                            articleController.extractArticleIdFromUrl(article.getUrl()));
                     isFirstIteration = false; // Set the flag to false after the first iteration
                 }
             }
