@@ -14,7 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-public class Account extends Application {
+public class ArticleDetailView extends Application {
 
     @Override
     public void start(Stage primaryStage) {
@@ -50,7 +50,7 @@ public class Account extends Application {
         VBox root = new VBox(banner, content);
 
         Scene scene = new Scene(root, 1050, 550);
-        primaryStage.setTitle("Votre Compte");
+        primaryStage.setTitle("Détail de article");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
