@@ -1,121 +1,144 @@
 package com.hamNews.Vue;
 
-
+import javafx.animation.*;
 import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.text.Font;
-import javafx.stage.Stage;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+import javafx.geometry.Pos;
 
 public class Home extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Image appImage = new Image("com/hamNews/Vue/images/Logo.png");
-        ImageView appImageView = new ImageView(appImage);
-        appImageView.setFitWidth(180);
-        appImageView.setFitHeight(200);
+        StackPane welcomePane = createWelcomePane();
+        VBox mainContent = createMainContent();
+        VBox loginPrompt = createLoginPrompt();
 
-        VBox leftPane = new VBox();
-        leftPane.setPrefWidth(300);
-        leftPane.setStyle("-fx-background-color: #8AC7FF;");
-        leftPane.setAlignment(Pos.CENTER);
-        leftPane.getChildren().add(appImageView);
+        loginPrompt.setVisible(false);
 
-        VBox rightPane = new VBox(20);
-        rightPane.setAlignment(Pos.CENTER);
-        rightPane.setPadding(new Insets(20));
-        rightPane.setStyle("-fx-background-color: #ffffff;");
+        StackPane mainLayout = new StackPane(mainContent, welcomePane, loginPrompt);
 
-        Text Logo = new Text("HamNews");
-        Logo.setFont(Font.font("Arial", 50));
-        Logo.setStyle("-fx-font-weight: bold; -fx-fill: #3498db;");
-
-        Text welcomeText = new Text("Bienvenue à l'application des articles");
-        welcomeText.setFont(Font.font("Arial", 20));
-        welcomeText.setStyle("-fx-font-weight: bold; -fx-fill: black;");
-
-        Text registerPromptText = new Text("Vous n'avez pas de compte ? Rejoignez-nous !");
-        registerPromptText.setFont(Font.font("Arial", 14));
-        registerPromptText.setStyle("-fx-font-weight: bold; -fx-fill: black;");
-
-        Image loginImage = new Image("com/hamNews/Vue/images/Login.png");
-        ImageView loginImageView = new ImageView(loginImage);
-        loginImageView.setFitWidth(60);
-        loginImageView.setFitHeight(60);
-
-        Image registerImage = new Image("com/hamNews/Vue/images/Register.png");
-        ImageView registerImageView = new ImageView(registerImage);
-        registerImageView.setFitWidth(60);
-        registerImageView.setFitHeight(60);
-
-        Button btnLogin = new Button("Login");
-        btnLogin.setFont(new Font("Arial", 16));
-        btnLogin.setPrefSize(120, 40);
-        btnLogin.setStyle("-fx-background-color: #3498db; -fx-text-fill: white;");
-        btnLogin.setOnAction(event -> openLogin());
-
-        Button btnRegister = new Button("Register");
-        btnRegister.setFont(new Font("Arial", 16));
-        btnRegister.setPrefSize(120, 40);
-        btnRegister.setStyle("-fx-background-color: #3498db; -fx-text-fill: white;");
-        btnRegister.setOnAction(event -> openRegister());
-
-        VBox loginSection = new VBox(10);
-        loginSection.setAlignment(Pos.CENTER);
-        loginSection.getChildren().addAll(Logo, welcomeText, loginImageView, btnLogin);
-
-        loginSection.setSpacing(20);
-
-        VBox registerSection = new VBox(10);
-        registerSection.setAlignment(Pos.CENTER);
-        registerSection.getChildren().addAll(registerPromptText, registerImageView, btnRegister);
-
-        registerSection.setSpacing(20);
-
-        rightPane.getChildren().addAll(loginSection, registerSection);
-
-        HBox mainLayout = new HBox(leftPane, rightPane);
-
-        HBox.setHgrow(rightPane, javafx.scene.layout.Priority.ALWAYS);
-
-        Scene scene = new Scene(mainLayout, 850, 550);
-        primaryStage.setTitle("Home");
+        Scene scene = new Scene(mainLayout, 1150, 550);
+        primaryStage.setTitle("Interface Principale");
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        Button startButton = (Button) welcomePane.lookup("#startButton");
+        startButton.setOnAction(event -> {
+            TranslateTransition transition = new TranslateTransition(Duration.seconds(1), welcomePane);
+            transition.setToY(-600);
+            transition.setOnFinished(e -> welcomePane.setVisible(false));
+            transition.play();
+
+            PauseTransition delay = new PauseTransition(Duration.seconds(5));
+            delay.setOnFinished(e2 -> loginPrompt.setVisible(true));
+            delay.play();
+        });
     }
 
+    private StackPane createWelcomePane() {
+        Image welcomeImage = new Image("com/hamNews/Vue/images/welcome.jpeg");
+        ImageView welcomeImageView = new ImageView(welcomeImage);
+        welcomeImageView.setFitWidth(1150);
+        welcomeImageView.setFitHeight(550);
+
+        Text welcomeText = new Text("Bienvenue à HamNews");
+        welcomeText.setFont(Font.font("Arial", 48));
+        welcomeText.setFill(Color.LIGHTBLUE);
+
+        Text subtitleText = new Text("Conservez vos articles scrappés, téléchargez et gérez-les facilement !");
+        subtitleText.setFont(Font.font("Arial", 20));
+        subtitleText.setFill(Color.BLACK);
+
+        Button startButton = new Button("C'est Parti");
+        startButton.setId("startButton"); // Pour la récupération dans la fonction principale
+        startButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 20; -fx-padding: 10 30;");
+        startButton.setPrefWidth(200);
+        startButton.setPrefHeight(50);
+
+        VBox welcomeLayout = new VBox(20, welcomeText, subtitleText, startButton);
+        welcomeLayout.setAlignment(Pos.CENTER);
+        welcomeLayout.setTranslateY(-50);
+
+        return new StackPane(welcomeImageView, welcomeLayout);
+    }
+
+    private VBox createMainContent() {
+        HBox banner = new HBox();
+        banner.setStyle("-fx-background-color: #3498db;");
+        banner.setPrefHeight(100);
+        banner.setAlignment(Pos.CENTER_LEFT);
+
+        Circle circle = new Circle(90);
+        circle.setFill(Color.rgb(52, 152, 219));
+        circle.setTranslateY(-130);
+
+        Image appImage = new Image("com/hamNews/Vue/images/Profile.png");
+        ImageView appImageView = new ImageView(appImage);
+        appImageView.setFitWidth(100);
+        appImageView.setFitHeight(100);
+        appImageView.setPreserveRatio(true);
+        appImageView.setTranslateY(-130);
+
+        StackPane circleWithImage = new StackPane(circle, appImageView);
+
+        Text articleText = new Text("la Liste des articles");
+        articleText.setFont(Font.font("Arial", 24));
+        articleText.setFill(Color.BLACK);
+
+        VBox content = new VBox(20, banner, circleWithImage, articleText);
+        content.setAlignment(Pos.TOP_CENTER);
+        content.setStyle("-fx-background-color: #ecf0f1;");
+        content.setPrefHeight(400);
+
+        return content;
+    }
+
+    // ======== Fonction pour créer le panneau de connexion ========
+    private VBox createLoginPrompt() {
+        VBox loginPrompt = new VBox(20);
+        loginPrompt.setAlignment(Pos.CENTER);
+        loginPrompt.setStyle("-fx-background-color: white; -fx-padding: 50; -fx-background-radius: 10;");
+        loginPrompt.setPrefSize(400, 300);
+        loginPrompt.setTranslateY(-50);
+
+        // Ajouter l'image au-dessus du texte
+        Image connectImage = new Image("com/hamNews/Vue/images/ConnectPlease.png");
+        ImageView connectImageView = new ImageView(connectImage);
+        connectImageView.setFitWidth(150);
+        connectImageView.setFitHeight(100);
+        connectImageView.setPreserveRatio(true);
+
+        Text promptText = new Text("Pour continuer à explorer et sauvegarder,\nconnectez-vous !");
+        promptText.setFont(Font.font("Arial", 24));
+        promptText.setFill(Color.DODGERBLUE);
+
+        Button loginButton = new Button("Se connecter");
+        loginButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 18; -fx-padding: 10 30;");
+        loginButton.setOnAction(event -> openLogin());
+
+        // Ajouter l'image, le texte et le bouton dans l'ordre souhaité
+        loginPrompt.getChildren().addAll(connectImageView, promptText, loginButton);
+        return loginPrompt;
+    }
     private void openLogin() {
         System.out.println("Ouverture de l'interface Login...");
-
         LoginView login = new LoginView();
         Stage loginStage = new Stage();
-
-        // If Login has a start method taking a Stage, you can call it
         login.start(loginStage);
-
         loginStage.show();
     }
-
-    private void openRegister() {
-        System.out.println("Ouverture de l'interface Register...");
-        RegisterView Register = new RegisterView();
-        Stage RegisterStage = new Stage();
-
-        // If Login has a start method taking a Stage, you can call it
-        Register.start(RegisterStage);
-
-        RegisterStage.show();
-    }
-
     public static void main(String[] args) {
         launch(args);
     }
