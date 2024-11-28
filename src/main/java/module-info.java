@@ -6,5 +6,5 @@ module MainJavaFX {
 
     opens com.hamNews.Views to javafx.fxml;
 
-    exports com.hamNews.Views;
+    exports com.hamNews;
 }

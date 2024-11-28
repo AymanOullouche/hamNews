@@ -138,6 +138,7 @@ public class LoginView extends Application {
     }
 
     private void handleLogin(TextField emailField, PasswordField passwordField) {
+        System.out.println("login");
 
         String email = emailField.getText().trim();
         String password = passwordField.getText();
