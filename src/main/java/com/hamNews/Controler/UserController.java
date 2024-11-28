@@ -1,12 +1,12 @@
 package com.hamNews.Controler;
 
-import com.hamNews.Model.DB.DatabaseConnection;
-import com.hamNews.Model.User.User;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import com.hamNews.Model.DB.DatabaseConnection;
+import com.hamNews.Model.User.User;
 
 public class UserController {
 
@@ -14,7 +14,7 @@ public class UserController {
         String insertUserSQL = "INSERT INTO Users (firstName, lastName, password, email) VALUES (?, ?, ?, ?)";
 
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(insertUserSQL)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(insertUserSQL)) {
 
             preparedStatement.setString(1, firstName);
             preparedStatement.setString(2, lastName);
@@ -24,18 +24,15 @@ public class UserController {
 
             return rowsAffected > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
             return false;
         }
     }
-
-
 
     public User loginUser(String email, String password) {
         String selectUserSQL = "SELECT * FROM Users WHERE email = ? AND password = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(selectUserSQL)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(selectUserSQL)) {
 
             preparedStatement.setString(1, email);
             preparedStatement.setString(2, password);
@@ -50,7 +47,6 @@ public class UserController {
                 return null;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             return null;
         }
     }

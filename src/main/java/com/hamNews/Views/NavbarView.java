@@ -1,6 +1,5 @@
 package com.hamNews.Views;
 
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
@@ -10,9 +9,9 @@ import javafx.scene.shape.SVGPath;
 
 public class NavbarView extends HBox {
 
-    private TextField searchField;
-    private Button searchButton;
-    private Button refreshButton;
+    private final TextField searchField;
+    private final Button searchButton;
+    private final Button refreshButton;
 
     public NavbarView() {
         // Set the layout to use Flexbox equivalent (HBox)
@@ -47,12 +46,9 @@ public class NavbarView extends HBox {
 
         // Add an event handler for the search functionality (Optional)
         searchButton.setOnAction(event -> handleSearch());
-        searchField.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode().toString().equals("ENTER")) {
-                    handleSearch();
-                }
+        searchField.setOnKeyPressed((KeyEvent event) -> {
+            if (event.getCode().toString().equals("ENTER")) {
+                handleSearch();
             }
         });
 

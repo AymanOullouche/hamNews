@@ -24,7 +24,7 @@ import javafx.util.Duration;
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(@SuppressWarnings("exports") Stage primaryStage) {
         StackPane welcomePane = createWelcomePane();
         VBox mainContent = createMainContent();
         VBox loginPrompt = createLoginPrompt();
@@ -175,58 +175,3 @@ public class Main extends Application {
         launch(args);
     }
 }
-
-// import java.io.IOException;
-// import java.util.ArrayList;
-// import java.util.Arrays;
-// import java.util.List;
-
-// import com.hamNews.Controler.ArticleController;
-// import com.hamNews.Model.Article.Article;
-
-// public class Main {
-// public static void main(String[] args) {
-// ArticleController articleController = new ArticleController();
-
-// ArrayList<String> categories = new ArrayList<>(
-// Arrays.asList(
-// "economie",
-// "monde",
-// "societe",
-// "emploi",
-// "sports",
-// "automobile"));
-
-// // Loop through each category
-// for (String category : categories) {
-// String gridUrl = "https://lematin.ma/" + category; // URL for the article
-// grid
-// int lastFetchedArticleId =
-// articleController.getLastFetchedArticleIdByCategory(category);
-
-// try {
-// // Scrape articles from the grid
-// List<Article> articles = articleController.scrapeArticleGrid(gridUrl,
-// lastFetchedArticleId);
-// boolean isFirstIteration = true;
-
-// for (Article article : articles) {
-// // Fetch the content for the article
-// String articleContent = articleController.fetchContent(article.getUrl());
-
-// // Store the article along with its content and published date (from Article)
-// articleController.storeArticle(article, articleContent, category);
-
-// if (isFirstIteration) {
-// articleController.updateLastFetchedArticleByCategory(category,
-// ArticleController.extractArticleIdFromUrl(article.getUrl()));
-// isFirstIteration = false; // Set the flag to false after the first iteration
-// }
-// }
-// } catch (IOException e) {
-// System.out.println("Error fetching articles for category: " + category);
-// System.out.println(e.getMessage());
-// }
-// }
-// }
-// }
