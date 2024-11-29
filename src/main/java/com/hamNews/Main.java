@@ -2,6 +2,7 @@ package com.hamNews;
 
 import com.hamNews.Controler.NewsScraperTask;
 import com.hamNews.Views.LoginView;
+import com.hamNews.Views.Authentification;
 
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
@@ -165,10 +166,10 @@ public class Main extends Application {
 
     private void openLogin() {
         System.out.println("Ouverture de l'interface Login...");
-        LoginView login = new LoginView();
-        Stage loginStage = new Stage();
-        login.start(loginStage);
-        loginStage.show();
+        Authentification Auth = new Authentification();
+        Stage AuthStage = new Stage();
+        Auth.start(AuthStage);
+        AuthStage.show();
     }
 
     public static void main(String[] args) {
