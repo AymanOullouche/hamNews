@@ -5,6 +5,7 @@ module MainJavaFX {
     requires org.jsoup;
 
     opens com.hamNews.Views to javafx.fxml;
+    exports com.hamNews.Views to javafx.graphics;
 
     exports com.hamNews;
 }
