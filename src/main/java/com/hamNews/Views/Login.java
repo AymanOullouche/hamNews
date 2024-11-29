@@ -126,7 +126,7 @@ public class Login {
 
     private void openHome() {
         System.out.println("Ouverture de l'interface Home...");
-        Home articleListView = new Home();
+        ArticleListView articleListView = new ArticleListView();
         Stage articleListStage = new Stage();
         articleListView.start(articleListStage);
         articleListStage.show();
