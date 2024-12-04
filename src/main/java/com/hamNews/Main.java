@@ -1,5 +1,6 @@
 package com.hamNews;
 
+import com.hamNews.Controler.ConnectivityController;
 import com.hamNews.Controler.NewsScraperTask;
 import com.hamNews.Views.Authentification;
 
@@ -29,11 +30,17 @@ public class Main extends Application {
         VBox mainContent = createMainContent();
         VBox loginPrompt = createLoginPrompt();
 
+        // Root layout for the UI
+        StackPane mainLayout = new StackPane(mainContent, welcomePane, loginPrompt);
+
+        // Start the connectivity monitoring
+        ConnectivityController.startConnectivityMonitor();
+
         loginPrompt.setVisible(false);
+
         // Start the background scraping process immediately after the application
         // launches
         startScraping();
-        StackPane mainLayout = new StackPane(mainContent, welcomePane, loginPrompt);
 
         Scene scene = new Scene(mainLayout, 1150, 550);
         primaryStage.setTitle("Interface Principale");
@@ -110,7 +117,6 @@ public class Main extends Application {
         circle.setFill(Color.rgb(52, 152, 219));
         circle.setTranslateY(-130);
 
-        // Image appImage = new Image("com/hamNews/Views/images/Profile.png");
         Image appImage = new Image(getClass().getResource("/com/hamNews/Views/images/Profile.png").toExternalForm());
         ImageView appImageView = new ImageView(appImage);
         appImageView.setFitWidth(100);
@@ -140,8 +146,6 @@ public class Main extends Application {
         loginPrompt.setPrefSize(400, 300);
         loginPrompt.setTranslateY(-50);
 
-        // Ajouter l'image au-dessus du texte
-        // Image connectImage = new Image("com/hamNews/Views/images/ConnectPlease.png");
         Image connectImage = new Image(
                 getClass().getResource("/com/hamNews/Views/images/ConnectPlease.png").toExternalForm());
         ImageView connectImageView = new ImageView(connectImage);
@@ -158,7 +162,6 @@ public class Main extends Application {
                 "-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 18; -fx-padding: 10 30;");
         loginButton.setOnAction(event -> openLogin());
 
-        // Ajouter l'image, le texte et le bouton dans l'ordre souhaité
         loginPrompt.getChildren().addAll(connectImageView, promptText, loginButton);
         return loginPrompt;
     }
