@@ -1,6 +1,7 @@
 package com.hamNews.Controler;
 
 import com.hamNews.Model.Article.Article;
+import com.hamNews.Model.Article.ArticleSelect;
 import com.hamNews.Model.DB.DatabaseConnection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -109,7 +110,6 @@ public class ArticleController {
         }
     }
 
-    // Fetches the full content of an article
     public String fetchContent(String url) throws IOException {
         Document doc = Jsoup.connect(url).get();
         Element contentElement = doc.select("div.article-desc").first();
@@ -120,5 +120,35 @@ public class ArticleController {
             return "No content found for the specified selector."; // Fallback content
         }
     }
+    public List<ArticleSelect> getArticles() {
+        List<ArticleSelect> articles = new ArrayList<>();
+        String selectSQL = "SELECT title, description, url, image, categories, publishDate, content, categories FROM Articles";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                String title = resultSet.getString("title");
+                String description = resultSet.getString("description");
+                String url = resultSet.getString("url");
+                String image = resultSet.getString("image");
+                String category = resultSet.getString("categories");
+                String content = resultSet.getString("content");
+                String publishDate = resultSet.getString("publishDate");
+
+                articles.add(new ArticleSelect(title, url, image, description, publishDate, content, category));
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return articles;
+    }
+
+
 }
+
+
 
