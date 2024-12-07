@@ -17,6 +17,9 @@ import java.sql.SQLException;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
 
 public class UserController {
@@ -46,17 +49,120 @@ public class UserController {
             return false;
         }
     }
+    public boolean updateUser(int userId,String name, String email,String LastName) {
+        String query = "UPDATE users SET firstName = ?, email = ?, LastName = ? WHERE userId  = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            // String hashedPassword = hashPassword(password);
+            preparedStatement.setString(1,name);
+            preparedStatement.setString(2, email);
+            preparedStatement.setString(3, LastName);
+            preparedStatement.setInt(4, userId);
+
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updateUserCategories(int userId, List<String> favoriteCategories) {
+        String fav = String.join(", ", favoriteCategories);
+        String updateQuery = "UPDATE users SET likedCategories = ? WHERE userId  = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
+
+            // Update each category in the list
+//            for (String category : favoriteCategories) {
+//                updateStmt.setString(1, category);
+//                updateStmt.setInt(2, userId);
+//                updateStmt.setString(3, category); // Update where category matches
+//                updateStmt.addBatch(); // Add to batch for efficiency
+//            }
+            updateStmt.setString(1, fav);
+            updateStmt.setInt(2, userId);
+//                updateStmt.setString(3, category); // Update where category matches
+            updateStmt.addBatch();
+
+            // Execute all updates in batch
+            int[] results = updateStmt.executeBatch();
+            return results.length > 0; // Return true if updates were executed
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public static List<String> getUserCategories(int userId) {
+        List<String> categories = new ArrayList<>();
+        String query = "SELECT likedCategories FROM users WHERE userId = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                // Get the likedCategories column as a string
+                String likedCategories = resultSet.getString("likedCategories");
+
+                // Check for null and split the string if it's not null
+                if (likedCategories != null) {
+                    // Split the string by the delimiter (comma) and add to the list
+                    String[] categoriesArray = likedCategories.split(",\\s*");
+                    Collections.addAll(categories, categoriesArray);
+                } else {
+                    System.out.println("No liked categories found for userId: " + userId);
+                }
+            } else {
+                System.out.println("No user found with userId: " + userId);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return categories;
+    }
+
+
+    public boolean updatePassword(int userId, String newPassword) {
+        try {
+            // Connexion à la base de données
+            Connection connection = DatabaseConnection.getConnection();
+
+            // Requête SQL pour mettre à jour le mot de passe
+            String updateQuery = "UPDATE users SET password = ? WHERE userId = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(updateQuery);
+            String hashedPassword = hashPassword(newPassword);
+            // Associer les paramètres (le nouveau mot de passe et l'ID de l'utilisateur)
+            preparedStatement.setString(1, hashedPassword); // Cryptage recommandé ici
+            preparedStatement.setInt(2, userId);
+
+            // Exécuter la mise à jour
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            // Fermer la connexion
+            preparedStatement.close();
+            connection.close();
+
+            // Vérifier si une ligne a été affectée
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
 
     public User loginUser(String email, String password) {
         String selectUserSQL = "SELECT * FROM Users WHERE email = ?";
-
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(selectUserSQL)) {
-
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
-
             if (resultSet.next()) {
                 String storedHashedPassword = resultSet.getString("password");
                 String hashedPassword = hashPassword(password);
@@ -65,9 +171,7 @@ public class UserController {
                     String firstName = resultSet.getString("firstName");
                     String lastName = resultSet.getString("lastName");
                     User user=new User(userId, firstName, lastName, null, email, null, null);
-
                     Session.setLoggedInUser(user);
-
                     return user;
                 } else {
                     return null;
@@ -148,4 +252,3 @@ public class UserController {
 
 
 }
-
