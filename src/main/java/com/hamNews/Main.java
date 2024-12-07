@@ -1,7 +1,6 @@
 package com.hamNews;
 
 import com.hamNews.Controler.NewsScraperTask;
-import com.hamNews.Views.LoginView;
 import com.hamNews.Views.Authentification;
 
 import javafx.animation.PauseTransition;
