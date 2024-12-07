@@ -1,26 +1,26 @@
 package com.hamNews.Controler;
 
-import com.hamNews.Model.DB.DatabaseConnection;
-import com.hamNews.Model.DB.Session;
-import com.hamNews.Model.User.User;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TextField;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
+
+import com.hamNews.Model.DB.DatabaseConnection;
+import com.hamNews.Model.DB.Session;
+import com.hamNews.Model.User.User;
+
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.TextField;
 
 public class UserController {
     private static final String CONFIG_FILE = "login.properties";
@@ -34,7 +34,7 @@ public class UserController {
         String insertUserSQL = "INSERT INTO Users (firstName, lastName, password, email) VALUES (?, ?, ?, ?)";
 
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(insertUserSQL)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(insertUserSQL)) {
 
             preparedStatement.setString(1, firstName);
             preparedStatement.setString(2, lastName);
@@ -49,13 +49,14 @@ public class UserController {
             return false;
         }
     }
-    public boolean updateUser(int userId,String name, String email,String LastName) {
-        String query = "UPDATE users SET firstName = ?, email = ?, LastName = ? WHERE userId  = ?";
+
+    public boolean updateUser(int userId, String name, String email, String LastName) {
+        String query = "UPDATE Users SET firstName = ?, email = ?, LastName = ? WHERE userId  = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             // String hashedPassword = hashPassword(password);
-            preparedStatement.setString(1,name);
+            preparedStatement.setString(1, name);
             preparedStatement.setString(2, email);
             preparedStatement.setString(3, LastName);
             preparedStatement.setInt(4, userId);
@@ -69,21 +70,21 @@ public class UserController {
 
     public boolean updateUserCategories(int userId, List<String> favoriteCategories) {
         String fav = String.join(", ", favoriteCategories);
-        String updateQuery = "UPDATE users SET likedCategories = ? WHERE userId  = ?";
+        String updateQuery = "UPDATE Users SET likedCategories = ? WHERE userId  = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
+                PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
 
             // Update each category in the list
-//            for (String category : favoriteCategories) {
-//                updateStmt.setString(1, category);
-//                updateStmt.setInt(2, userId);
-//                updateStmt.setString(3, category); // Update where category matches
-//                updateStmt.addBatch(); // Add to batch for efficiency
-//            }
+            // for (String category : favoriteCategories) {
+            // updateStmt.setString(1, category);
+            // updateStmt.setInt(2, userId);
+            // updateStmt.setString(3, category); // Update where category matches
+            // updateStmt.addBatch(); // Add to batch for efficiency
+            // }
             updateStmt.setString(1, fav);
             updateStmt.setInt(2, userId);
-//                updateStmt.setString(3, category); // Update where category matches
+            // updateStmt.setString(3, category); // Update where category matches
             updateStmt.addBatch();
 
             // Execute all updates in batch
@@ -95,12 +96,13 @@ public class UserController {
             return false;
         }
     }
+
     public static List<String> getUserCategories(int userId) {
         List<String> categories = new ArrayList<>();
-        String query = "SELECT likedCategories FROM users WHERE userId = ?";
+        String query = "SELECT likedCategories FROM Users WHERE userId = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+                PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setInt(1, userId);
             ResultSet resultSet = statement.executeQuery();
@@ -126,14 +128,13 @@ public class UserController {
         return categories;
     }
 
-
     public boolean updatePassword(int userId, String newPassword) {
         try {
             // Connexion à la base de données
             Connection connection = DatabaseConnection.getConnection();
 
             // Requête SQL pour mettre à jour le mot de passe
-            String updateQuery = "UPDATE users SET password = ? WHERE userId = ?";
+            String updateQuery = "UPDATE Users SET password = ? WHERE userId = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(updateQuery);
             String hashedPassword = hashPassword(newPassword);
             // Associer les paramètres (le nouveau mot de passe et l'ID de l'utilisateur)
@@ -155,12 +156,10 @@ public class UserController {
         return false;
     }
 
-
-
     public User loginUser(String email, String password) {
         String selectUserSQL = "SELECT * FROM Users WHERE email = ?";
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(selectUserSQL)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(selectUserSQL)) {
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -170,7 +169,7 @@ public class UserController {
                     int userId = resultSet.getInt("userId");
                     String firstName = resultSet.getString("firstName");
                     String lastName = resultSet.getString("lastName");
-                    User user=new User(userId, firstName, lastName, null, email, null, null);
+                    User user = new User(userId, firstName, lastName, null, email, null, null);
                     Session.setLoggedInUser(user);
                     return user;
                 } else {
@@ -185,29 +184,30 @@ public class UserController {
             return null;
         }
     }
+
     public void logout() {
         Session.logout();
     }
 
-        private String hashPassword (String password){
-            try {
-                MessageDigest digest = MessageDigest.getInstance("SHA-256");
-                byte[] encodedHash = digest.digest(password.getBytes());
+    private String hashPassword(String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] encodedHash = digest.digest(password.getBytes());
 
-                StringBuilder hexString = new StringBuilder();
-                for (byte b : encodedHash) {
-                    String hex = Integer.toHexString(0xff & b);
-                    if (hex.length() == 1) {
-                        hexString.append('0');
-                    }
-                    hexString.append(hex);
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : encodedHash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
                 }
-                return hexString.toString();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-                return null;
+                hexString.append(hex);
             }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
         }
+    }
 
     public void saveEmail(String email) {
         Properties properties = new Properties();
@@ -221,7 +221,7 @@ public class UserController {
         }
     }
 
-    public void loadEmail(TextField emailField,CheckBox rememberMeCheckBox) {
+    public void loadEmail(TextField emailField, CheckBox rememberMeCheckBox) {
         Properties properties = new Properties();
         File file = new File(CONFIG_FILE);
 
@@ -239,7 +239,7 @@ public class UserController {
 
             String email = properties.getProperty("email");
 
-            if (email != null ) {
+            if (email != null) {
                 emailField.setText(email);
                 rememberMeCheckBox.setSelected(true);
             }
@@ -247,8 +247,5 @@ public class UserController {
             e.printStackTrace();
         }
     }
-
-
-
 
 }
