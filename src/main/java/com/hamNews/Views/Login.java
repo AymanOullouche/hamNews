@@ -124,9 +124,9 @@ public class Login {
         }
     }
 
-    private void openHome() {
+     private void openHome() {
         System.out.println("Ouverture de l'interface Home...");
-        ArticleListView articleListView = new ArticleListView();
+        Dashboard articleListView = new Dashboard();
         Stage articleListStage = new Stage();
         articleListView.start(articleListStage);
         articleListStage.show();
