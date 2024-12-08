@@ -3,9 +3,7 @@ package com.hamNews.Views;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -47,8 +45,9 @@ public class ArticleView extends Application {
         return mainLayout;
 
     }
-    public static void openSignUpFormWithAnimation(ArticleDetailView articleDetailView ) {
-        articleDetail=articleDetailView.getArticlesContainer();
+
+    public static void openSignUpFormWithAnimation(ArticleDetailView articleDetailView) {
+        articleDetail = articleDetailView.getArticlesContainer();
         mainLayout.getChildren().clear();
         mainLayout.getChildren().addAll(articleDetail);
         articleDetail.setTranslateX(100);
@@ -57,16 +56,16 @@ public class ArticleView extends Application {
         transition.setToX(0);
         transition.play();
     }
-    public static  void reverseAnimation() {
+
+    public static void reverseAnimation() {
         mainLayout.getChildren().clear();
-        mainLayout.getChildren().addAll(sectionTitle,ArticlePan);
+        mainLayout.getChildren().addAll(sectionTitle, ArticlePan);
         ArticlePan.setTranslateX(600);
         TranslateTransition transition = new TranslateTransition(Duration.seconds(1.5), ArticlePan);
         transition.setFromX(600);
         transition.setToX(0);
         transition.play();
     }
-
 
     public static void main(String[] args) {
         launch(args);

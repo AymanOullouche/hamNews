@@ -1,0 +1,55 @@
+# name: hamNews
+# version: 1.0.0
+# mainClass: com.hamNews.Main
+# dependencies:
+#   - org.jsoup:jsoup:1.18.1
+#   - javafx.controls:javafx:13
+#   - mysql:mysql-connector-java:8.0.30
+# database:
+#   url: jdbc:mysql://localhost:3306/hamnews
+#   username: root
+#   password: ""
+# javaVersion: 17
+# buildTool: Maven
+
+#
+#version: '3.8'
+#
+#services:
+#  app:
+#    image: your-java-app-image
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8080:8080"  # Map the application port
+#    environment:
+#      - DB_HOST=db
+#      - DB_PORT=3306
+#      - DB_USER=root
+#      - DB_PASSWORD=
+#      - DB_NAME=hamnews
+#    depends_on:
+#      - db
+#
+#  db:
+#    image: mysql:5.7
+#    restart: always
+#    environment:
+#      MYSQL_ROOT_PASSWORD:
+#      MYSQL_DATABASE: hamnews
+#      MYSQL_USER: root
+#      MYSQL_PASSWORD:
+#    ports:
+#      - "3306:3306"  # Map MySQL port
+
+database:
+  url: jdbc:mysql://localhost:3306/hamnews
+  username: root
+  password:
+
+server:
+  port: 8080
+
+logging:
+  level: INFO
