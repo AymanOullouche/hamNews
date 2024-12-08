@@ -18,35 +18,38 @@ import javafx.util.Duration;
 
 public class ArticleView extends Application {
 
-    private ArticleListView articleListView;
-    private ArticleDetailView  articleDetailView;
-    private ScrollPane ArticlePan;
-    private VBox mainLayout;
+    private static ArticleListView articleListView;
+    private static ArticleDetailView  articleDetailView;
+    private static ScrollPane ArticlePan;
+    private static ScrollPane DetailPan;
+    private static Text sectionTitle;
+    private static VBox mainLayout;
+    private static ArticleSelect selectedArticle;
+
 
     @Override
     public void start(Stage primaryStage) {
+
         articleListView = new ArticleListView();
-        ArticleSelect articleSelect=articleListView.article;
-        articleDetailView=new ArticleDetailView(articleSelect);
         ArticlePan = articleListView.ShowArticle();
         mainLayout = new VBox(20);
         mainLayout.setPadding(new Insets(20));
         mainLayout.setStyle("-fx-background-color: white");
 
+
         // Titre de la section
-        Text sectionTitle = new Text("Home");
+        sectionTitle = new Text("Home");
         sectionTitle.setFont(Font.font("Arial", FontWeight.BOLD, 30));
         sectionTitle.setFill(Color.BLACK);
 
 
         mainLayout.getChildren().addAll(sectionTitle, ArticlePan);
-
         mainLayout.setPadding(new Insets(20));
         mainLayout.setStyle("-fx-background-color: white");
 
 
         Scene scene = new Scene(mainLayout, 1150, 550);
-        primaryStage.setTitle("Authentification");
+        primaryStage.setTitle("Liste des articles");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
 
@@ -55,6 +58,30 @@ public class ArticleView extends Application {
         primaryStage.show();
     }
 
+    public static void openDetailFormWithAnimation(ArticleSelect selectedArticle) {
+
+        articleDetailView = new ArticleDetailView(selectedArticle);
+        DetailPan =articleDetailView.ShowArticle();
+        mainLayout.getChildren().clear();
+        mainLayout.getChildren().addAll(DetailPan);
+        DetailPan.setTranslateX(1000);
+        TranslateTransition transition = new TranslateTransition(Duration.seconds(1.5), DetailPan);
+        transition.setFromX(1000);
+        transition.setToX(0);
+        transition.play();
+
+    }
+
+    public static void openListFormWithAnimation() {
+        TranslateTransition transition = new TranslateTransition(Duration.seconds(1.5), DetailPan);
+        transition.setFromX(0);
+        transition.setToX(1200);
+        transition.setOnFinished(e -> {
+            mainLayout.getChildren().clear();
+            mainLayout.getChildren().addAll(sectionTitle, ArticlePan);
+        });
+        transition.play();
+    }
 
     public static void main(String[] args) {
         launch(args);
