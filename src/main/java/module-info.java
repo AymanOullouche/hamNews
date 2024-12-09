@@ -1,4 +1,4 @@
-module com.hamNews.App {
+module com.hamNews.Main {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.graphics;

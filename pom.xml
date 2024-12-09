@@ -64,7 +64,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>com.hamNews.App</mainClass>
+                    <mainClass>com.hamNews.Main</mainClass>
                     <launcher>hamNews</launcher>
                 </configuration>
                 <executions>
@@ -86,7 +86,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.hamNews.App</mainClass>
+                            <mainClass>com.hamNews.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
