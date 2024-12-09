@@ -1,5 +1,6 @@
 package com.hamNews.Views;
 
+import com.hamNews.Model.Article.ArticleSelect;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -17,11 +18,14 @@ import javafx.util.Duration;
 
 public class ArticleView extends Application {
 
-    private ArticleListView articleListView;
+    private static ArticleListView articleListView;
+    private static ArticleDetailView  articleDetailView;
     private static ScrollPane ArticlePan;
+    private static ScrollPane DetailPan;
     private static Text sectionTitle;
-    private static HBox articleDetail;
     private static VBox mainLayout;
+    private static ArticleSelect selectedArticle;
+
 
     @Override
     public void start(Stage primaryStage) {
@@ -47,28 +51,34 @@ public class ArticleView extends Application {
         return mainLayout;
 
     }
-    public static void openSignUpFormWithAnimation(ArticleDetailView articleDetailView ) {
-        articleDetail=articleDetailView.getArticlesContainer();
+    public static void openDetailFormWithAnimation(ArticleSelect selectedArticle) {
+
+        articleDetailView = new ArticleDetailView(selectedArticle);
+        DetailPan =articleDetailView.ShowArticle();
         mainLayout.getChildren().clear();
-        mainLayout.getChildren().addAll(articleDetail);
-        articleDetail.setTranslateX(100);
-        TranslateTransition transition = new TranslateTransition(Duration.seconds(1.5), articleDetail);
-        transition.setFromX(600);
+        mainLayout.getChildren().addAll(DetailPan);
+        DetailPan.setTranslateX(1000);
+        TranslateTransition transition = new TranslateTransition(Duration.seconds(1.5), DetailPan);
+        transition.setFromX(1000);
         transition.setToX(0);
         transition.play();
+
     }
-    public static  void reverseAnimation() {
-        mainLayout.getChildren().clear();
-        mainLayout.getChildren().addAll(sectionTitle,ArticlePan);
-        ArticlePan.setTranslateX(600);
-        TranslateTransition transition = new TranslateTransition(Duration.seconds(1.5), ArticlePan);
-        transition.setFromX(600);
-        transition.setToX(0);
+    public static void openListFormWithAnimation() {
+        TranslateTransition transition = new TranslateTransition(Duration.seconds(1.5), DetailPan);
+        transition.setFromX(0);
+        transition.setToX(1200);
+        transition.setOnFinished(e -> {
+            mainLayout.getChildren().clear();
+            mainLayout.getChildren().addAll(sectionTitle, ArticlePan);
+        });
         transition.play();
     }
+
 
 
     public static void main(String[] args) {
         launch(args);
     }
 }
+
