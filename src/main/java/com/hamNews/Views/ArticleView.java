@@ -1,11 +1,11 @@
 package com.hamNews.Views;
 
 import com.hamNews.Model.Article.ArticleSelect;
+
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -17,13 +17,12 @@ import javafx.util.Duration;
 public class ArticleView extends Application {
 
     private static ArticleListView articleListView;
-    private static ArticleDetailView  articleDetailView;
+    private static ArticleDetailView articleDetailView;
     private static ScrollPane ArticlePan;
     private static ScrollPane DetailPan;
     private static Text sectionTitle;
     private static VBox mainLayout;
     private static ArticleSelect selectedArticle;
-
 
     @Override
     public void start(Stage primaryStage) {
@@ -49,16 +48,12 @@ public class ArticleView extends Application {
         return mainLayout;
 
     }
-<<<<<<< HEAD
 
-    public static void openSignUpFormWithAnimation(ArticleDetailView articleDetailView) {
-        articleDetail = articleDetailView.getArticlesContainer();
-=======
     public static void openDetailFormWithAnimation(ArticleSelect selectedArticle) {
 
         articleDetailView = new ArticleDetailView(selectedArticle);
-        DetailPan =articleDetailView.ShowArticle();
->>>>>>> origin/MVC-Mohamed
+        DetailPan = articleDetailView.ShowArticle();
+
         mainLayout.getChildren().clear();
         mainLayout.getChildren().addAll(DetailPan);
         DetailPan.setTranslateX(1000);
@@ -68,19 +63,7 @@ public class ArticleView extends Application {
         transition.play();
 
     }
-<<<<<<< HEAD
 
-    public static void reverseAnimation() {
-        mainLayout.getChildren().clear();
-        mainLayout.getChildren().addAll(sectionTitle, ArticlePan);
-        ArticlePan.setTranslateX(600);
-        TranslateTransition transition = new TranslateTransition(Duration.seconds(1.5), ArticlePan);
-        transition.setFromX(600);
-        transition.setToX(0);
-        transition.play();
-    }
-
-=======
     public static void openListFormWithAnimation() {
         TranslateTransition transition = new TranslateTransition(Duration.seconds(1.5), DetailPan);
         transition.setFromX(0);
@@ -92,11 +75,7 @@ public class ArticleView extends Application {
         transition.play();
     }
 
-
-
->>>>>>> origin/MVC-Mohamed
     public static void main(String[] args) {
         launch(args);
     }
 }
-

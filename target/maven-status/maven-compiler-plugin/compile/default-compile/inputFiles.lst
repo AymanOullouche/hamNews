@@ -1,5 +1,6 @@
 /home/noureddinedriouech/Downloads/HamNews/src/main/java/com/hamNews/Views/Authentification.java
 /home/noureddinedriouech/Downloads/HamNews/src/main/java/com/hamNews/Views/Dashboard.java
+/home/noureddinedriouech/Downloads/HamNews/src/main/java/com/hamNews/Views/WindowManager.java
 /home/noureddinedriouech/Downloads/HamNews/src/main/java/com/hamNews/Model/DB/DatabaseConnection.java
 /home/noureddinedriouech/Downloads/HamNews/src/main/java/com/hamNews/Model/User/User.java
 /home/noureddinedriouech/Downloads/HamNews/src/main/java/com/hamNews/Views/ProfileSettingsView.java
@@ -14,14 +15,15 @@
 /home/noureddinedriouech/Downloads/HamNews/src/main/java/com/hamNews/Views/ArticleListView.java
 /home/noureddinedriouech/Downloads/HamNews/src/main/java/com/hamNews/Views/Login.java
 /home/noureddinedriouech/Downloads/HamNews/src/main/java/com/hamNews/Views/ArticleView.java
-/home/noureddinedriouech/Downloads/HamNews/src/main/java/com/hamNews/Main.java
 /home/noureddinedriouech/Downloads/HamNews/src/main/java/com/hamNews/App.java
+/home/noureddinedriouech/Downloads/HamNews/src/main/java/com/hamNews/Main.java
 /home/noureddinedriouech/Downloads/HamNews/src/main/java/com/hamNews/Controler/ConnectivityController.java
 /home/noureddinedriouech/Downloads/HamNews/src/main/java/com/hamNews/Model/Article/Article.java
 /home/noureddinedriouech/Downloads/HamNews/src/main/java/com/hamNews/Views/Account.java
 /home/noureddinedriouech/Downloads/HamNews/src/main/java/com/hamNews/Views/Register.java
 /home/noureddinedriouech/Downloads/HamNews/src/main/java/com/hamNews/Model/Article/ArticleSelect.java
 /home/noureddinedriouech/Downloads/HamNews/src/main/java/com/hamNews/Views/ArticleDetailView.java
+/home/noureddinedriouech/Downloads/HamNews/src/main/java/com/hamNews/Views/Bienvenue.java
 /home/noureddinedriouech/Downloads/HamNews/src/main/java/com/hamNews/Views/SearchBar.java
 /home/noureddinedriouech/Downloads/HamNews/src/main/java/module-info.java
 /home/noureddinedriouech/Downloads/HamNews/src/main/java/com/hamNews/Controler/UserController.java

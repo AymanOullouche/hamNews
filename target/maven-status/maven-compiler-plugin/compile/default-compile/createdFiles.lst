@@ -3,6 +3,7 @@ com/hamNews/Main.class
 com/hamNews/Views/Authentification.class
 com/hamNews/Model/Article/Article.class
 com/hamNews/Views/AuthentificationBanner.class
+com/hamNews/Views/WindowManager.class
 com/hamNews/App.class
 com/hamNews/Views/Login.class
 com/hamNews/Controler/UserController.class
@@ -21,6 +22,7 @@ com/hamNews/Controler/CategoryController.class
 module-info.class
 com/hamNews/Controler/DownloadController.class
 com/hamNews/Controler/ConnectivityController.class
+com/hamNews/Views/Bienvenue.class
 com/hamNews/Controler/NewsScraperTask.class
 com/hamNews/Model/DB/DatabaseConnection.class
 com/hamNews/Model/Article/ArticleContent.class

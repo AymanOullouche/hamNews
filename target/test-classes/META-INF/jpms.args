@@ -1,4 +1,4 @@
 --patch-module
-com.hamNews=_
+com.hamNews.App=_
 --add-reads
-com.hamNews=ALL-UNNAMED
+com.hamNews.App=ALL-UNNAMED
