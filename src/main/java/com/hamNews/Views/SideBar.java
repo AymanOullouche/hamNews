@@ -1,10 +1,15 @@
 package com.hamNews.Views;
 
+import com.hamNews.Model.DB.Session;
+import com.hamNews.Model.User.User;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -15,26 +20,33 @@ public class SideBar extends Application {
     private String currentView = "Home";
 
     private Button profileButton;
-    private Button Home;
-    private Button Logout;
-
+    private Button homeButton;
+    private Button logoutButton;
 
     @Override
     public void start(Stage primaryStage) {
+        VBox sidebar = AfficherNavBar();
 
+        // Main layout
+        BorderPane mainLayout = new BorderPane();
+        mainLayout.setLeft(sidebar);
 
+        Scene scene = new Scene(mainLayout, 800, 600);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Sidebar Example");
+        primaryStage.show();
     }
 
-    public VBox AfficherNavBar(){
-
+    public VBox AfficherNavBar() {
+        // Sidebar container
         VBox sidebar = new VBox(20);
         sidebar.setPadding(new Insets(20));
         sidebar.setStyle("-fx-background-color: #f8f8f8; -fx-border-color: #e0e0e0; -fx-border-width: 0 1 0 0;");
 
-        // Categories
+        // Categories section
         VBox categorySection = new VBox(10);
         categorySection.getChildren().addAll(
-                Home=createSidebarButton("Home", "/com/hamNews/Views/images/home.png"),
+                homeButton = createSidebarButton("Home", "/com/hamNews/Views/images/home.png"),
                 createSidebarButton("Economie", "/com/hamNews/Views/images/Economie.png"),
                 createSidebarButton("Sports", "/com/hamNews/Views/images/Sport.png"),
                 createSidebarButton("Automobile", "/com/hamNews/Views/images/Car.png"),
@@ -43,36 +55,38 @@ public class SideBar extends Application {
                 createSidebarButton("Emploie", "/com/hamNews/Views/images/Work.png")
         );
 
-        // Ensure categories take all the available space
+        // Ensure categories take available vertical space
         VBox.setVgrow(categorySection, Priority.ALWAYS);
 
-        // Footer Buttons
+        // Footer buttons
         VBox footer = new VBox(15);
-        footer.getChildren().addAll(
-                createSidebarButton("Offline News", "/com/hamNews/Views/images/Offline.png"),
-                profileButton =createSidebarButton("Profile", "/com/hamNews/Views/images/Profile.png", "-fx-text-fill: red;"),
-                Logout=createSidebarButton("Log Out", "/com/hamNews/Views/images/Logout.png", "-fx-text-fill: red;")
+        footer.setAlignment(Pos.BOTTOM_CENTER);
 
-        );
+        User theUser = Session.getLoggedInUser();
+        if (theUser != null) {
+            footer.getChildren().addAll(
+                    createSidebarButton("Offline News", "/com/hamNews/Views/images/Offline.png"),
+                    profileButton = createSidebarButton("Profile & Settings", "/com/hamNews/Views/images/Profile.png", "-fx-text-fill: red;"),
+                    logoutButton = createSidebarButton("Log Out", "/com/hamNews/Views/images/Logout.png", "-fx-text-fill: red;")
+            );
+        }
 
         // Add sections to the sidebar
-
         sidebar.getChildren().addAll(categorySection, footer);
         return sidebar;
-
     }
+
     public Button getProfileButton() {
         return profileButton;
     }
+
     public Button getHomeButton() {
-        return Home;
+        return homeButton;
     }
+
     public Button getLogoutButton() {
-        return Logout;
+        return logoutButton;
     }
-
-
-
 
     private Button createSidebarButton(String text, String iconPath) {
         return createSidebarButton(text, iconPath, "-fx-text-fill: black;");
@@ -86,31 +100,6 @@ public class SideBar extends Application {
                         customStyle
         );
         button.setMaxWidth(Double.MAX_VALUE);
-        return button;
-    }
-
-    private Button createSidebarButtonWithAction(String text, String iconPath, String customStyle, Stage primaryStage) {
-        Button button = new Button(text);
-        button.setGraphic(loadImage(iconPath, 16, 16));
-        button.setStyle(
-                "-fx-background-color: transparent; -fx-alignment: center-left; -fx-font-size: 14px; " +
-                        customStyle
-        );
-        button.setMaxWidth(Double.MAX_VALUE);
-
-        // Define behavior when button is clicked
-        if (text.equals("Profile & Settings")) {
-            button.setOnAction(e -> {
-                // Load the Profile.java page
-                ProfileSettingsView profilePage = new ProfileSettingsView(); // Assuming you have a Profile class
-                try {
-                    profilePage.start(primaryStage); // Navigate to the Profile page
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            });
-        }
-
         return button;
     }
 
