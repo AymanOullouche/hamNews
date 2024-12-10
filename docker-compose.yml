@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   app:
     image: hamnewsapp
@@ -11,12 +13,11 @@ services:
       - DB_PORT=3306
       - DB_NAME=hamnews
       - DB_USER=root
-      - DB_PASSWORD=rootpassword
-
+      - DB_PASSWORD=
   db:
     image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_ROOT_PASSWORD: ""
       MYSQL_DATABASE: hamnews
     ports:
       - "3306:3306"

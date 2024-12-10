@@ -27,16 +27,13 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ArticleListView extends Application {
     DownloadController downloadController = new DownloadController();
 
     private static List<ArticleSelect> articles = new ArrayList<>();
     private static HBox articlesContainer = new HBox(20);
     private static int currentIndex = 0;
-    private static static final int ARTICLES_PER_ROW = 4;
+    private static final int ARTICLES_PER_ROW = 4;
     private static ScrollPane scrollPane;
     private static Button readMoreButton;
     private static Button likeButton;
@@ -272,7 +269,7 @@ public class ArticleListView extends Application {
         nextButton.setDisable(currentIndex + ARTICLES_PER_ROW >= articles.size());
     }
 
-    public void openBienvenue() {
+    public static void openBienvenue() {
 
         System.out.println("Ouverture de l'interface Home...");
 

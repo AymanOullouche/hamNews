@@ -18,7 +18,7 @@ public class ArticleView extends Application {
 
     private static ArticleListView articleListView;
     private static ArticleDetailView articleDetailView;
-    private static ScrollPane ArticlePan;
+    private static VBox ArticlePan;
     private static ScrollPane DetailPan;
     private static Text sectionTitle;
     private static VBox mainLayout;

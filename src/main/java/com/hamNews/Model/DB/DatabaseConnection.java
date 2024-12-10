@@ -16,8 +16,8 @@ public class DatabaseConnection {
     private static final String PASSWORD = "";
 
     public static Connection getConnection() throws SQLException {
-        System.out.println("All environment variables:");
-        System.getenv().forEach((key, value) -> System.out.println(key + "=" + value));
+        String dbUser = System.getenv("DB_USER");
+        System.out.println("DB User: " + dbUser); // This should print the value of DB_USER
 
         return DriverManager.getConnection(DB_URL, USER, PASSWORD);
     }
