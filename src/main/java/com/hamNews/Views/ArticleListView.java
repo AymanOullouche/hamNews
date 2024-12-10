@@ -182,7 +182,6 @@ public class ArticleListView extends Application {
         paginationContainer.getChildren().addAll(previousButton, nextButton);
         paginationContainer.setPadding(new Insets(10));
 
-
         mainContainer = new VBox(10);
         mainContainer.getChildren().addAll(scrollPane, paginationContainer);
         mainContainer.setAlignment(Pos.CENTER);
@@ -198,15 +197,15 @@ public class ArticleListView extends Application {
             if (currentIndex + ARTICLES_PER_ROW < articles.size()) {
                 currentIndex += ARTICLES_PER_ROW;
                 displayArticles();
+                PaginationButtons();
             }
         } else if (event.getDeltaY() > 0) {
             if (currentIndex - ARTICLES_PER_ROW >= 0) {
                 currentIndex -= ARTICLES_PER_ROW;
                 displayArticles();
+                PaginationButtons();
             }
         }
-
-
     }
 
     public void handleKeyPress(KeyEvent event) {
@@ -214,11 +213,13 @@ public class ArticleListView extends Application {
             if (currentIndex + ARTICLES_PER_ROW < articles.size()) {
                 currentIndex += ARTICLES_PER_ROW;
                 displayArticles();
+                PaginationButtons();
             }
         } else if (event.getCode() == KeyCode.UP) {
             if (currentIndex - ARTICLES_PER_ROW >= 0) {
                 currentIndex -= ARTICLES_PER_ROW;
                 displayArticles();
+                PaginationButtons();
             }
         }
     }
