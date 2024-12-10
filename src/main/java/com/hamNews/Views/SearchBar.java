@@ -50,7 +50,7 @@ public class SearchBar {
 
                 // Add your search logic here
             } else {
-                System.out.println("Mouse Clicked: Search bar is empty.");
+                ArticleListView.displayArticles();
             }
         });
 

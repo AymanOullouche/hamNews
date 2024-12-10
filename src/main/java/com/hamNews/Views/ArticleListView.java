@@ -295,19 +295,145 @@ public class ArticleListView extends Application {
 
     public static void displayFilteredArticlesByTitle(String titleSubstring) {
         List<ArticleSelect> filteredArticles = filterArticlesByTitle(titleSubstring);
+
         displayFilteredArticles(filteredArticles);
     }
 
     public static void displayFilteredArticlesByCategory(String category) {
+        ArticleView.sectionTitle.setText(category);
         List<ArticleSelect> filteredArticles = filterArticlesByCategory(category);
         displayFilteredArticles(filteredArticles);
     }
 
     // Display filtered articles with pagination
     public static void displayFilteredArticles(List<ArticleSelect> filteredArticles) {
-        articles = filteredArticles;
-        currentIndex = 0; // Reset to the first page of the filtered articles
-        displayArticles();
+
+        theUser = Session.getLoggedInUser();
+
+        articlesContainer.setAlignment(Pos.CENTER);
+        articlesContainer.setStyle("-fx-background-color: white; -fx-padding: 15;");
+        articlesContainer.getChildren().clear();
+
+        for (int i = currentIndex; i < Math.min(currentIndex + ARTICLES_PER_ROW, filteredArticles.size()); i++) {
+            ArticleSelect article = filteredArticles.get(i);
+
+            VBox card = new VBox(20);
+            card.setPadding(new Insets(10));
+
+            card.setStyle(
+                    "-fx-background-color: white; -fx-border-width: 0; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 0);");
+            card.setPrefWidth(100);
+            card.setPrefHeight(360);
+
+            ImageView imageView = new ImageView(new Image(article.getImageUrl()));
+            imageView.setFitWidth(232);
+            imageView.setFitHeight(80);
+            imageView.setPreserveRatio(true);
+
+            Label title = new Label(article.getTitle());
+            title.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: black;");
+            title.setMaxWidth(232);
+            title.setMaxHeight(80);
+            title.setWrapText(true);
+            title.setAlignment(Pos.CENTER);
+
+            Label snippet = new Label(article.getDescription());
+            snippet.setWrapText(true);
+            snippet.setStyle("-fx-text-fill: #666; -fx-font-size: 14px;");
+            snippet.setMaxWidth(232);
+            snippet.setMaxHeight(60);
+            snippet.setStyle("-fx-text-overrun: ellipsis; -fx-wrap-text: true; -fx-text-fill: #666;");
+
+            HBox actions = new HBox(10);
+            actions.setAlignment(Pos.CENTER);
+
+            likeButton = new Button();
+            likeButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-cursor: hand;");
+            likeButton.setMinSize(40, 40);
+
+            downloadButton = new Button();
+            downloadButton
+                    .setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-cursor: hand;");
+
+            downloadButton.setMinSize(40, 40);
+
+            // Image IconI = new
+            // Image(getClass().getResource("/com/hamNews/Views/images/Like.png").toExternalForm());
+            // ImageView ImageIcon = new ImageView(IconI);
+            // ImageIcon.setFitWidth(20);
+            // ImageIcon.setFitHeight(20);
+            // likeButton.setGraphic(ImageIcon);
+
+            // // Image IconD = new
+            // Image(getClass().getResource("/com/hamNews/Views/images/Donwload.png").toExternalForm());
+            // ImageView downloadIcon = new ImageView(IconD);
+            // downloadIcon.setFitHeight(20);
+            // downloadIcon.setFitWidth(20);
+            // downloadButton.setGraphic(downloadIcon);
+
+            readMoreButton = new Button("Read More");
+            readMoreButton
+                    .setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-cursor: hand;");
+            readMoreButton.setMinSize(100, 40);
+
+            likeButton.setOnAction(e -> {
+
+                System.out.println("Liked article: " + article.getTitle());
+                // displayFilteredArticlesByTitle("Donald");
+                displayFilteredArticlesByCategory("automobile");
+
+                if (theUser == null) {
+
+                    openBienvenue();
+                } else {
+                    System.out.println("Liked article: " + article.getTitle());
+
+                }
+            });
+
+            downloadButton.setOnAction(e -> {
+                if (theUser == null) {
+
+                    openBienvenue();
+                }
+                // else {
+                // article.setDownloaded(!article.isDownloaded());
+                // if (article.isDownloaded()) {
+                // downloadIcon.setImage(new Image(
+                // getClass().getResource("/com/hamNews/Views/images/Remove.png").toExternalForm()));
+                // } else {
+                // downloadIcon.setImage(new Image(
+                // getClass().getResource("/com/hamNews/Views/images/Download.png").toExternalForm()));
+                // }
+                // System.out.println("Article " + article.getUrl() + " "
+                // + (article.isDownloaded() ? "saved for" : "removed from") + " offline
+                // reading");
+                // }
+            });
+
+            readMoreButton.setOnAction(e -> {
+                if (theUser == null) {
+
+                    openBienvenue();
+
+                } else {
+                    System.out.println("Read more: " + article.getTitle());
+                    ArticleView.openDetailFormWithAnimation(article);
+                }
+            });
+
+            actions.getChildren().addAll(likeButton, downloadButton, readMoreButton);
+            actions.setStyle("-fx-spacing: 15; -fx-alignment: center;");
+
+            Region space1 = new Region();
+            Region space2 = new Region();
+            VBox.setVgrow(space1, Priority.ALWAYS);
+            VBox.setVgrow(space2, Priority.ALWAYS);
+
+            card.getChildren().addAll(imageView, title, space1, snippet, space2, actions);
+            articlesContainer.getChildren().add(card);
+
+        }
     }
 
 }

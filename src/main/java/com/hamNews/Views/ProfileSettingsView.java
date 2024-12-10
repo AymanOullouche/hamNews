@@ -21,14 +21,13 @@ public class ProfileSettingsView extends Application {
 
     User theUser = Session.getLoggedInUser();
 
-
     @Override
     public void start(Stage primaryStage) {
 
-//
+        //
     }
 
-    public ScrollPane getProfileSettings(){
+    public ScrollPane getProfileSettings() {
 
         // Initialize categories
         initializeCategories();
@@ -39,7 +38,7 @@ public class ProfileSettingsView extends Application {
         mainContainer.setStyle("-fx-background-color: #ffffff;");
 
         // Title
-        Label titleLabel = new Label("Profile & Settings");
+        Label titleLabel = new Label("Profil et paramètres");
         titleLabel.setStyle("-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #000;");
         titleLabel.setAlignment(Pos.CENTER);
 
@@ -51,7 +50,7 @@ public class ProfileSettingsView extends Application {
         VBox passwordChangeCard = createPasswordChangeCard();
         mainContainer.getChildren().add(passwordChangeCard);
 
-// Wrap the main container in a ScrollPane
+        // Wrap the main container in a ScrollPane
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(mainContainer);
         scrollPane.setFitToWidth(true); // Ensure the content stretches horizontally to fit the ScrollPane
@@ -69,6 +68,7 @@ public class ProfileSettingsView extends Application {
         categories.add(new Category("Monde"));
         categories.add(new Category("Emploie"));
     }
+
     private String validateProfileForm(String firstName, String lastName, String email) {
         if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty()) {
             return "Veuillez remplir tous les champs.";
@@ -84,23 +84,25 @@ public class ProfileSettingsView extends Application {
 
         return null; // Aucun problème
     }
-    //    private String validatePassword(String password) {
-//        if (password.isEmpty()) {
-//            return "Veuillez remplir tous les champs.";
-//        }
-//
-//        if (!password.matches("[A-Za-z0-9_@]+")) {
-//            return "Le mot de passe  ne doivent contenir que des lettres, chiffres, _ ou @.";
-//        }
-//
-//        return null;
-//    }
+
+    // private String validatePassword(String password) {
+    // if (password.isEmpty()) {
+    // return "Veuillez remplir tous les champs.";
+    // }
+    //
+    // if (!password.matches("[A-Za-z0-9_@]+")) {
+    // return "Le mot de passe ne doivent contenir que des lettres, chiffres, _ ou
+    // @.";
+    // }
+    //
+    // return null;
+    // }
     private VBox createProfileCard() {
         VBox profileCard = new VBox(15);
         profileCard.setPadding(new Insets(20));
         profileCard.setStyle(getCardStyle());
 
-        Label titleLabel = new Label("User Profile");
+        Label titleLabel = new Label("Profil d'utilisateur");
         styleTitleLabel(titleLabel);
 
         VBox profileContent = new VBox(15);
@@ -122,7 +124,7 @@ public class ProfileSettingsView extends Application {
         styleLabel(emailLabel);
         TextField emailField = createTextField(email);
 
-        Button saveButton = new Button("Update Profile");
+        Button saveButton = new Button("Mettre à jour le profil");
         stylePrimaryButton(saveButton);
 
         // Bouton avec vérification et mise à jour
@@ -169,15 +171,12 @@ public class ProfileSettingsView extends Application {
                 firstNameLabel, firstNameField,
                 lastNameLabel, lastNameField,
                 emailLabel, emailField,
-                saveButtonContainer
-        );
+                saveButtonContainer);
 
         profileCard.getChildren().addAll(titleLabel, profileContent);
 
         return profileCard;
     }
-
-
 
     // Method to style the title label
     private void styleTitleLabel(Label label) {
@@ -185,14 +184,13 @@ public class ProfileSettingsView extends Application {
         label.setAlignment(Pos.CENTER);
     }
 
-
     private VBox createSettingsCard() {
 
         User theUser = Session.getLoggedInUser();
-//        int idUser;
-//        if (theUser != null) {
-//             idUser = theUser.getUserId();
-//        }
+        // int idUser;
+        // if (theUser != null) {
+        // idUser = theUser.getUserId();
+        // }
         System.out.println("the is is here " + theUser.getUserId());
         favoriteCategories = UserController.getUserCategories(theUser.getUserId());
 
@@ -202,14 +200,14 @@ public class ProfileSettingsView extends Application {
         settingsCard.setStyle(getCardStyle());
 
         // Title of the settings card
-        Label titleLabel = new Label("App Settings");
+        Label titleLabel = new Label("Paramètres de l'application");
         styleTitleLabel(titleLabel); // Apply specific styling for the title
 
         // Settings content
         VBox settingsContent = new VBox(15);
 
         // Favorite Categories Label
-        Label favCategoriesLabel = new Label("Favorite Categories");
+        Label favCategoriesLabel = new Label("Catégories préférées");
         styleLabel(favCategoriesLabel);
 
         // Favorite Categories Display
@@ -219,7 +217,7 @@ public class ProfileSettingsView extends Application {
 
         // Add Category Dropdown
         ComboBox<String> categoryComboBox = new ComboBox<>();
-        categoryComboBox.setPromptText("Add favorite category");
+        categoryComboBox.setPromptText("Ajouter une catégorie favorite");
         updateCategoryComboBox(categoryComboBox);
 
         categoryComboBox.setOnAction(event -> {
@@ -235,9 +233,8 @@ public class ProfileSettingsView extends Application {
         settingsContent.getChildren().addAll(
                 favCategoriesLabel,
                 favCategoriesDisplay,
-                categoryComboBox
-        );
-        Button saveButton = new Button("Update Categories");
+                categoryComboBox);
+        Button saveButton = new Button("Mettre à jour les catégories");
         stylePrimaryButton(saveButton);
         saveButton.setOnAction(event -> {
             User loggedInUser = Session.getLoggedInUser();
@@ -252,15 +249,15 @@ public class ProfileSettingsView extends Application {
                 alert.setTitle(isUpdated ? "Success" : "Error");
                 alert.setHeaderText(null);
                 alert.setContentText(isUpdated
-                        ? "Favorite categories updated successfully!"
-                        : "Failed to update favorite categories. Please try again.");
+                        ? "Catégories favorites mises à jour avec succès !"
+                        : "Impossible de mettre à jour les catégories favorites. Veuillez réessayer.");
                 alert.showAndWait();
             } else {
                 // Show error if no user is logged in
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText(null);
-                alert.setContentText("No logged-in user found. Please log in first.");
+                alert.setContentText("Aucun utilisateur connecté n'a été trouvé. Veuillez d'abord vous connecter");
                 alert.showAndWait();
             }
         });
@@ -268,14 +265,14 @@ public class ProfileSettingsView extends Application {
         saveButtonContainer.setAlignment(Pos.CENTER_RIGHT);
         // Add all form elements to the content container
         settingsContent.getChildren().addAll(
-                saveButtonContainer
-        );
+                saveButtonContainer);
 
         // Add title and content to the main card
         settingsCard.getChildren().addAll(titleLabel, settingsContent);
 
         return settingsCard;
     }
+
     private VBox createPasswordChangeCard() {
         // Container principal pour le changement de mot de passe
         VBox passwordCard = new VBox(15);
@@ -283,19 +280,19 @@ public class ProfileSettingsView extends Application {
         passwordCard.setStyle(getCardStyle()); // Utiliser le même style de carte
 
         // Titre
-        Label titleLabel = new Label("Change Password");
+        Label titleLabel = new Label("Changer le mot de passe");
         styleTitleLabel(titleLabel); // Utiliser le même style de titre
 
         // Contenu du formulaire
         VBox passwordContent = new VBox(15);
 
         // Label pour le champ de mot de passe
-        Label passwordLabel = new Label("New Password");
+        Label passwordLabel = new Label("Nouveau mot de passe");
         styleLabel(passwordLabel); // Utiliser le style des labels
 
         // Champ de saisie pour le mot de passe
         PasswordField passwordField = new PasswordField();
-        passwordField.setPromptText("Enter new password");
+        passwordField.setPromptText("Entrez un nouveau mot de passe");
         styleField(passwordField);
 
         // Label pour indiquer la force du mot de passe
@@ -315,34 +312,38 @@ public class ProfileSettingsView extends Application {
                         "- At least 8 characters\n" +
                         "- Includes uppercase and lowercase letters\n" +
                         "- Includes a number\n" +
-                        "- Includes a special character (e.g., @, #, $)"
-        );
+                        "- Includes a special character (e.g., @, #, $)");
         styleLabel(passwordGuidelines);
 
         // Bouton pour sauvegarder le nouveau mot de passe
-        Button savePasswordButton = new Button("Update Password");
+        Button savePasswordButton = new Button("Mettre à jour le mot_passe");
         stylePrimaryButton(savePasswordButton);
 
-//        HBox saveButtonContainer = new HBox(savePasswordButton);
-//        saveButtonContainer.setAlignment(Pos.CENTER_RIGHT);
+        // HBox saveButtonContainer = new HBox(savePasswordButton);
+        // saveButtonContainer.setAlignment(Pos.CENTER_RIGHT);
+        // Ajouter le bouton dans le conteneur
+
+        // Ajouter le conteneur à la liste
+        // passwordContent.getChildren().add(saveButtonContainer);
 
         // Add all form elements to the content container
-        passwordContent.getChildren().addAll(
-                savePasswordButton
-        );
+        // passwordContent.getChildren().addAll(
+        // savePasswordButton
+        // );
+
         // Action du bouton "Update Password"
         savePasswordButton.setOnAction(event -> {
             String newPassword = passwordField.getText();
 
             // Vérification que le champ n'est pas vide
             if (newPassword.isEmpty()) {
-                showAlert(Alert.AlertType.ERROR, "Error", "Password cannot be empty!");
+                showAlert(Alert.AlertType.ERROR, "Error", "Le mot de passe ne peut pas être vide !");
                 return;
             }
 
             // Vérification que le mot de passe est complexe
             if (!isPasswordComplex(newPassword)) {
-                showAlert(Alert.AlertType.ERROR, "Error", "Password does not meet the requirements!");
+                showAlert(Alert.AlertType.ERROR, "Error", "Le mot de passe ne répond pas aux exigences!");
                 return;
             }
 
@@ -360,8 +361,8 @@ public class ProfileSettingsView extends Application {
                 showAlert(
                         isUpdated ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR,
                         isUpdated ? "Success" : "Error",
-                        isUpdated ? "Password updated successfully!" : "Failed to update password. Please try again."
-                );
+                        isUpdated ? "Mot de passe mis à jour avec succès !"
+                                : "Impossible de mettre à jour le mot de passe. Veuillez réessayer.");
 
                 // Si le mot de passe a été mis à jour, vider le champ
                 if (isUpdated) {
@@ -372,16 +373,18 @@ public class ProfileSettingsView extends Application {
                 showAlert(Alert.AlertType.ERROR, "Error", "No logged-in user found. Please log in first.");
             }
         });
-        HBox saveButtonContainer = new HBox(savePasswordButton);
-        saveButtonContainer.setAlignment(Pos.CENTER_RIGHT);
+        // HBox saveButtonContainer = new HBox(savePasswordButton);
+        // saveButtonContainer.setAlignment(Pos.CENTER_RIGHT);
         // Ajouter les composants au conteneur
+        HBox saveButtonContainer = new HBox();
+        saveButtonContainer.setAlignment(Pos.CENTER_RIGHT); // Aligner le contenu à droite
+        saveButtonContainer.getChildren().add(savePasswordButton);
         passwordContent.getChildren().addAll(
                 passwordLabel,
                 passwordField,
                 passwordStrengthLabel,
                 passwordGuidelines,
-                savePasswordButton
-        );
+                saveButtonContainer);
 
         // Ajouter le titre et le contenu au conteneur principal
         passwordCard.getChildren().addAll(titleLabel, passwordContent);
@@ -393,11 +396,11 @@ public class ProfileSettingsView extends Application {
      * Évalue la force du mot de passe.
      */
     private String evaluatePasswordStrength(String password) {
-        if (password.length() >= 12 && password.matches(".*[A-Z].*") && password.matches(".*[a-z].*")
-                && password.matches(".*\\d.*") && password.matches(".*[@#$%^&+=!].*")) {
+        if (password.length() >= 12 && password.matches(".[A-Z].") && password.matches(".[a-z].")
+                && password.matches(".\\d.") && password.matches(".[@#$%^&+=!].")) {
             return "Strong";
-        } else if (password.length() >= 8 && password.matches(".*[A-Z].*")
-                && password.matches(".*[a-z].*") && password.matches(".*\\d.*")) {
+        } else if (password.length() >= 8 && password.matches(".[A-Z].")
+                && password.matches(".[a-z].") && password.matches(".\\d.")) {
             return "Medium";
         } else {
             return "Weak";
@@ -409,10 +412,10 @@ public class ProfileSettingsView extends Application {
      */
     private boolean isPasswordComplex(String password) {
         return password.length() >= 8 &&
-                password.matches(".*[A-Z].*") &&
-                password.matches(".*[a-z].*") &&
-                password.matches(".*\\d.*") &&
-                password.matches(".*[@#$%^&+=!].*");
+                password.matches(".[A-Z].") &&
+                password.matches(".[a-z].") &&
+                password.matches(".\\d.") &&
+                password.matches(".[@#$%^&+=!].");
     }
 
     /**
@@ -440,22 +443,22 @@ public class ProfileSettingsView extends Application {
         alert.showAndWait();
     }
 
-
     // Method to style the title label
     private void styleTitleLabel1(Label label) {
         label.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #333;");
         label.setAlignment(Pos.CENTER);
     }
 
-
     private void updateFavoriteCategoriesDisplay(HBox favCategoriesDisplay) {
         favCategoriesDisplay.getChildren().clear();
         for (String category : favoriteCategories) {
             Label categoryLabel = new Label(category);
-            categoryLabel.setStyle("-fx-background-color: #e0e0e0; -fx-padding: 5px 10px; -fx-border-radius: 10px 0 0 10px; -fx-background-radius: 10px 0 0 10px; -fx-text-fill: #333;");
+            categoryLabel.setStyle(
+                    "-fx-background-color: #e0e0e0; -fx-padding: 5px 10px; -fx-border-radius: 10px 0 0 10px; -fx-background-radius: 10px 0 0 10px; -fx-text-fill: #333;");
 
             Button removeButton = new Button("✖");
-            removeButton.setStyle("-fx-background-color: #e0e0e0; -fx-padding: 5px 10px; -fx-border-radius: 0 10px 10px 0; -fx-background-radius: 0 10px 10px 0; -fx-text-fill: #000; -fx-font-size: 12px;");
+            removeButton.setStyle(
+                    "-fx-background-color: #e0e0e0; -fx-padding: 5px 10px; -fx-border-radius: 0 10px 10px 0; -fx-background-radius: 0 10px 10px 0; -fx-text-fill: #000; -fx-font-size: 12px;");
             removeButton.setOnAction(e -> {
                 removeFavoriteCategory(category);
                 updateFavoriteCategoriesDisplay(favCategoriesDisplay);
@@ -473,8 +476,7 @@ public class ProfileSettingsView extends Application {
                 categories.stream()
                         .map(Category::getName)
                         .filter(name -> !favoriteCategories.contains(name))
-                        .collect(Collectors.toList())
-        );
+                        .collect(Collectors.toList()));
     }
 
     private void addFavoriteCategory(String category) {
@@ -494,11 +496,13 @@ public class ProfileSettingsView extends Application {
     }
 
     private void styleField(Control field) {
-        field.setStyle("-fx-background-color: #f8f9fa; -fx-border-color: #ced4da; -fx-border-radius: 5px; -fx-background-radius: 5px; -fx-padding: 8px;");
+        field.setStyle(
+                "-fx-background-color: #f8f9fa; -fx-border-color: #ced4da; -fx-border-radius: 5px; -fx-background-radius: 5px; -fx-padding: 8px;");
     }
 
     private void stylePrimaryButton(Button button) {
-        button.setStyle("-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 8px 16px; -fx-background-radius: 5px;");
+        button.setStyle(
+                "-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 8px 16px; -fx-background-radius: 5px;");
         button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: #0056b3; -fx-text-fill: white;"));
         button.setOnMouseExited(e -> button.setStyle("-fx-background-color: #007bff; -fx-text-fill: white;"));
     }

@@ -36,10 +36,10 @@
 
 # # Command to run the application
 # CMD ["java", "-jar", "app.jar"]
-# Use OpenJDK 21 base image instead of OpenJDK 17
+
 FROM openjdk:21-slim
 
-# Install dependencies for JavaFX and Xvfb (virtual display)
+# Install dependencies for X11 and JavaFX
 RUN apt-get update && apt-get install -y \
     libgtk-3-0 \
     libx11-6 \
@@ -48,9 +48,8 @@ RUN apt-get update && apt-get install -y \
     libxtst6 \
     libxi6 \
     libgl1-mesa-glx \
-    xvfb \
-    wget \
-    unzip \
+    x11-apps \
+    xorg \
     maven \
     && rm -rf /var/lib/apt/lists/*
 
@@ -60,7 +59,7 @@ WORKDIR /app
 # Copy the JAR file from the target folder
 COPY target/hamNews-1.0-SNAPSHOT-jar-with-dependencies.jar /app/app.jar
 
-# Install JavaFX SDK (needed for JavaFX apps)
+# Install JavaFX SDK
 RUN wget https://download2.gluonhq.com/openjfx/17.0.2/openjfx-17.0.2_linux-x64_bin-sdk.zip \
     && unzip openjfx-17.0.2_linux-x64_bin-sdk.zip -d /opt/javafx-sdk \
     && rm openjfx-17.0.2_linux-x64_bin-sdk.zip
@@ -69,13 +68,13 @@ RUN wget https://download2.gluonhq.com/openjfx/17.0.2/openjfx-17.0.2_linux-x64_b
 ENV JAVAFX_HOME=/opt/javafx-sdk/javafx-sdk-17.0.2
 ENV PATH="${JAVAFX_HOME}/bin:${PATH}"
 
-# Ensure Java is headless (useful for Docker)
-ENV _JAVA_OPTIONS="-Djava.awt.headless=true"
+# Remove headless mode restriction
+ENV _JAVA_OPTIONS=""
 
-# Copy the start.sh script into the container
+# Copy the start script
 COPY start.sh /start.sh
 
-# Make sure the script is executable
+# Make the start script executable
 RUN chmod +x /start.sh
 
 # Set the entry point

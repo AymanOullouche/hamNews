@@ -2,6 +2,7 @@ package com.hamNews.Views;
 
 import com.hamNews.Model.DB.Session;
 import com.hamNews.Model.User.User;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -50,10 +51,9 @@ public class SideBar extends Application {
                 createSidebarButton("Economie", "/com/hamNews/Views/images/Economie.png"),
                 createSidebarButton("Sports", "/com/hamNews/Views/images/Sport.png"),
                 createSidebarButton("Automobile", "/com/hamNews/Views/images/Car.png"),
-                createSidebarButton("Societé", "/com/hamNews/Views/images/Society.png"),
+                createSidebarButton("Societe", "/com/hamNews/Views/images/Society.png"),
                 createSidebarButton("Monde", "/com/hamNews/Views/images/World.png"),
-                createSidebarButton("Emploie", "/com/hamNews/Views/images/Work.png")
-        );
+                createSidebarButton("Emploi", "/com/hamNews/Views/images/Work.png"));
 
         // Ensure categories take available vertical space
         VBox.setVgrow(categorySection, Priority.ALWAYS);
@@ -66,9 +66,10 @@ public class SideBar extends Application {
         if (theUser != null) {
             footer.getChildren().addAll(
                     createSidebarButton("Offline News", "/com/hamNews/Views/images/Offline.png"),
-                    profileButton = createSidebarButton("Profile & Settings", "/com/hamNews/Views/images/Profile.png", "-fx-text-fill: red;"),
-                    logoutButton = createSidebarButton("Log Out", "/com/hamNews/Views/images/Logout.png", "-fx-text-fill: red;")
-            );
+                    profileButton = createSidebarButton("Profile & Settings", "/com/hamNews/Views/images/Profile.png",
+                            "-fx-text-fill: red;"),
+                    logoutButton = createSidebarButton("Log Out", "/com/hamNews/Views/images/Logout.png",
+                            "-fx-text-fill: red;"));
         }
 
         // Add sections to the sidebar
@@ -97,9 +98,19 @@ public class SideBar extends Application {
         button.setGraphic(loadImage(iconPath, 20, 20));
         button.setStyle(
                 "-fx-background-color: transparent; -fx-alignment: center-left; -fx-font-size: 14px; " +
-                        customStyle
-        );
+                        customStyle);
         button.setMaxWidth(Double.MAX_VALUE);
+        button.setOnAction(event -> {
+            System.out.println(text + " button clicked");
+            activeCategory = text; // Set active category for handling navigation logic
+            if (activeCategory.equals("Home")) {
+                ArticleListView.displayArticles();
+            } else {
+
+                ArticleListView.displayFilteredArticlesByCategory(activeCategory);
+            }
+            // Further navigation logic here...
+        });
         return button;
     }
 

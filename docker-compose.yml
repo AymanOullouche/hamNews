@@ -21,3 +21,18 @@ services:
       MYSQL_DATABASE: hamnews
     ports:
       - "3306:3306"
+
+
+# docker run -e DISPLAY=$DISPLAY \
+#            -v /tmp/.X11-unix:/tmp/.X11-unix \
+#            your-image-name
+
+# # For macOS with XQuartz
+# # First, run: xhost +localhost
+# docker run -e DISPLAY=host.docker.internal:0 \
+#            -v /tmp/.X11-unix:/tmp/.X11-unix \
+#            your-image-name
+
+# # For Windows with VcXsrv or similar X server
+# docker run -e DISPLAY=host.docker.internal:0.0 \
+#            your-image-name
