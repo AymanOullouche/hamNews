@@ -20,7 +20,7 @@ public class ArticleView extends Application {
 
     private static ArticleListView articleListView;
     private static ArticleDetailView  articleDetailView;
-    private static ScrollPane ArticlePan;
+    private static VBox ArticlePan;
     private static ScrollPane DetailPan;
     private static Text sectionTitle;
     private static VBox mainLayout;
@@ -75,13 +75,14 @@ public class ArticleView extends Application {
     public static void openListFormWithAnimation() {
         TranslateTransition transition = new TranslateTransition(Duration.seconds(1.5), DetailPan);
         transition.setFromX(0);
-        transition.setToX(1200);
+        transition.setToX(1300);
         transition.setOnFinished(e -> {
             mainLayout.getChildren().clear();
             mainLayout.getChildren().addAll(sectionTitle, ArticlePan);
         });
         transition.play();
     }
+
 
     public static void main(String[] args) {
         launch(args);

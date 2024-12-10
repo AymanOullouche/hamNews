@@ -28,21 +28,26 @@ public class ArticleListView extends Application {
 
     private List<ArticleSelect> articles = new ArrayList<>();
     private HBox articlesContainer = new HBox(25);
-    private int currentIndex = 0; // Indice des articles chargés
-    private static final int ARTICLES_PER_ROW = 4; // Nombre d'articles à afficher par ligne
+    private int currentIndex = 0;
+    private static final int ARTICLES_PER_ROW = 4;
     private ScrollPane scrollPane;
     private Button readMoreButton ;
     private Button likeButton ;
     private Button downloadButton;
+    private Button nextButton;
+    private Button previousButton;
+    private VBox mainContainer;
+    private HBox paginationContainer;
+
     @Override
     public void start(Stage primaryStage) {}
-
 
     private void displayArticles() {
 
         articlesContainer.setAlignment(Pos.CENTER);
         articlesContainer.setStyle("-fx-background-color: white; -fx-padding: 15;");
         articlesContainer.getChildren().clear();
+
 
         for (int i = currentIndex; i < Math.min(currentIndex + ARTICLES_PER_ROW, articles.size()); i++) {
             ArticleSelect article = articles.get(i);
@@ -51,6 +56,8 @@ public class ArticleListView extends Application {
             card.setPadding(new Insets(10));
             card.setStyle("-fx-background-color: white; -fx-border-width: 0; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 0);");
             card.setPrefWidth(100);
+            card.setPrefHeight(360);
+
 
             ImageView imageView = new ImageView(new Image(article.getImageUrl()));
             imageView.setFitWidth(232);
@@ -134,7 +141,7 @@ public class ArticleListView extends Application {
         }
     }
 
-    public ScrollPane ShowArticle() {
+    public VBox  ShowArticle() {
         loadArticles();
 
         scrollPane = new ScrollPane(articlesContainer);
@@ -144,9 +151,46 @@ public class ArticleListView extends Application {
         scrollPane.setOnScroll(event -> handleScroll(event));
         scrollPane.setOnKeyPressed(event -> handleKeyPress(event));
 
-        return scrollPane;
+
+        nextButton = new Button("Next");
+        nextButton.setStyle("-fx-background-color: #54AEFF; -fx-border-color: transparent; -fx-cursor: hand; -fx-text-fill: white;");
+        nextButton.setMinSize(60, 30);
+        previousButton = new Button("Previous");
+        previousButton.setStyle("-fx-background-color: #54AEFF; -fx-border-color: transparent; -fx-cursor: hand; -fx-text-fill: white;");
+        previousButton.setMinSize(60, 30);
+
+        nextButton.setOnAction(e -> {
+            if (currentIndex + ARTICLES_PER_ROW < articles.size()) {
+                currentIndex += ARTICLES_PER_ROW;
+                displayArticles();
+                PaginationButtons();
+
+            }
+        });
+
+        previousButton.setOnAction(e -> {
+            if (currentIndex - ARTICLES_PER_ROW >= 0) {
+                currentIndex -= ARTICLES_PER_ROW;
+                displayArticles();
+                PaginationButtons();
+
+            }
+        });
+        PaginationButtons();
+
+        paginationContainer = new HBox(10);
+        paginationContainer.getChildren().addAll(previousButton, nextButton);
+        paginationContainer.setPadding(new Insets(10));
+
+
+        mainContainer = new VBox(10);
+        mainContainer.getChildren().addAll(scrollPane, paginationContainer);
+        mainContainer.setAlignment(Pos.CENTER);
+
+        return mainContainer;
 
     }
+
 
     public void handleScroll(ScrollEvent event) {
 
@@ -180,9 +224,14 @@ public class ArticleListView extends Application {
     }
 
     private void loadArticles() {
-        ArticleController art = new ArticleController();
-        articles = art.getArticles();
-        displayArticles();
+            ArticleController art = new ArticleController();
+            articles = art.getArticles();
+            displayArticles();
+    }
+
+    private void PaginationButtons() {
+        previousButton.setDisable(currentIndex == 0);
+        nextButton.setDisable(currentIndex + ARTICLES_PER_ROW >= articles.size());
     }
 
 }
