@@ -67,10 +67,11 @@ public class  Dashboard extends Application {
         mainLayout.setLeft(NavBar);
         mainLayout.setCenter(Articleview);
 
-        Scene scene = new Scene(mainLayout, 1350, 650);
+        Scene scene = new Scene(mainLayout);
+        primaryStage.setFullScreen(true);
+
         primaryStage.setTitle("Dashboard");
         primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
 
         Image icon = new Image(getClass().getResource("/com/hamNews/Views/images/ConnectPlease.png").toExternalForm());
         primaryStage.getIcons().add(icon);
@@ -123,4 +124,3 @@ public class  Dashboard extends Application {
         launch(args);
     }
 }
-

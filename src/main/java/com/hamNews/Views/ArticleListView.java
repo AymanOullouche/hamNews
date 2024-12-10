@@ -27,26 +27,34 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ArticleListView extends Application {
     DownloadController downloadController = new DownloadController();
 
-    public static List<ArticleSelect> articles = new ArrayList<>();
-    public static HBox articlesContainer = new HBox(25);
-    public static int currentIndex = 0; // Indice des articles chargés
-    public static final int ARTICLES_PER_ROW = 4; // Nombre d'articles à afficher par ligne
-    public static ScrollPane scrollPane;
-
-    public static Button readMoreButton;
-    public static Button likeButton;
-    public static Button downloadButton;
-    public static User theUser;
+    private static List<ArticleSelect> articles = new ArrayList<>();
+    private static HBox articlesContainer = new HBox(20);
+    private static int currentIndex = 0;
+    private static static final int ARTICLES_PER_ROW = 4;
+    private static ScrollPane scrollPane;
+    private static Button readMoreButton;
+    private static Button likeButton;
+    private static Button downloadButton;
+    private static Button nextButton;
+    private static Button previousButton;
+    private static VBox mainContainer;
+    private static HBox paginationContainer;
+    private static User theUser;
 
     @Override
     public void start(Stage primaryStage) {
     }
 
     public static void displayArticles() {
+
         theUser = Session.getLoggedInUser();
+
         articlesContainer.setAlignment(Pos.CENTER);
         articlesContainer.setStyle("-fx-background-color: white; -fx-padding: 15;");
         articlesContainer.getChildren().clear();
@@ -60,6 +68,7 @@ public class ArticleListView extends Application {
             card.setStyle(
                     "-fx-background-color: white; -fx-border-width: 0; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 0);");
             card.setPrefWidth(100);
+            card.setPrefHeight(360);
 
             ImageView imageView = new ImageView(new Image(article.getImageUrl()));
             imageView.setFitWidth(232);
@@ -113,10 +122,18 @@ public class ArticleListView extends Application {
             readMoreButton.setMinSize(100, 40);
 
             likeButton.setOnAction(e -> {
+
                 System.out.println("Liked article: " + article.getTitle());
                 // displayFilteredArticlesByTitle("Donald");
                 displayFilteredArticlesByCategory("automobile");
 
+                if (theUser == null) {
+
+                    openBienvenue();
+                } else {
+                    System.out.println("Liked article: " + article.getTitle());
+
+                }
             });
 
             downloadButton.setOnAction(e -> {
@@ -143,8 +160,8 @@ public class ArticleListView extends Application {
                 if (theUser == null) {
 
                     openBienvenue();
-                } else {
 
+                } else {
                     System.out.println("Read more: " + article.getTitle());
                     ArticleView.openDetailFormWithAnimation(article);
                 }
@@ -164,7 +181,7 @@ public class ArticleListView extends Application {
         }
     }
 
-    public ScrollPane ShowArticle() {
+    public VBox ShowArticle() {
         loadArticles();
 
         scrollPane = new ScrollPane(articlesContainer);
@@ -174,7 +191,43 @@ public class ArticleListView extends Application {
         scrollPane.setOnScroll(event -> handleScroll(event));
         scrollPane.setOnKeyPressed(event -> handleKeyPress(event));
 
-        return scrollPane;
+        nextButton = new Button("Next");
+        nextButton.setStyle(
+                "-fx-background-color: #54AEFF; -fx-border-color: transparent; -fx-cursor: hand; -fx-text-fill: white;");
+        nextButton.setMinSize(60, 30);
+        previousButton = new Button("Previous");
+        previousButton.setStyle(
+                "-fx-background-color: #54AEFF; -fx-border-color: transparent; -fx-cursor: hand; -fx-text-fill: white;");
+        previousButton.setMinSize(60, 30);
+
+        nextButton.setOnAction(e -> {
+            if (currentIndex + ARTICLES_PER_ROW < articles.size()) {
+                currentIndex += ARTICLES_PER_ROW;
+                displayArticles();
+                PaginationButtons();
+
+            }
+        });
+
+        previousButton.setOnAction(e -> {
+            if (currentIndex - ARTICLES_PER_ROW >= 0) {
+                currentIndex -= ARTICLES_PER_ROW;
+                displayArticles();
+                PaginationButtons();
+
+            }
+        });
+        PaginationButtons();
+
+        paginationContainer = new HBox(10);
+        paginationContainer.getChildren().addAll(previousButton, nextButton);
+        paginationContainer.setPadding(new Insets(10));
+
+        mainContainer = new VBox(10);
+        mainContainer.getChildren().addAll(scrollPane, paginationContainer);
+        mainContainer.setAlignment(Pos.CENTER);
+
+        return mainContainer;
 
     }
 
@@ -208,19 +261,25 @@ public class ArticleListView extends Application {
         }
     }
 
-    public static void openBienvenue() {
+    private void loadArticles() {
+        ArticleController art = new ArticleController();
+        articles = art.getArticles();
+        displayArticles();
+    }
+
+    private void PaginationButtons() {
+        previousButton.setDisable(currentIndex == 0);
+        nextButton.setDisable(currentIndex + ARTICLES_PER_ROW >= articles.size());
+    }
+
+    public void openBienvenue() {
+
         System.out.println("Ouverture de l'interface Home...");
 
         Bienvenue bienvenue = new Bienvenue();
         Stage bienvenueStage = new Stage();
         bienvenue.start(bienvenueStage);
         bienvenueStage.show();
-    }
-
-    private void loadArticles() {
-        ArticleController art = new ArticleController();
-        articles = art.getArticles();
-        displayArticles();
     }
 
     // Filter articles by title
