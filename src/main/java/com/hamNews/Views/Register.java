@@ -1,4 +1,3 @@
-
 package com.hamNews.Views;
 
 import com.hamNews.Controler.UserController;
@@ -146,7 +145,7 @@ public class Register {
 
             MessageErreur = "votre compte est crée avec succées , vous pouvez connecter !";
 
-            MessageE.setText(MessageErreur);
+             MessageE.setText(MessageErreur);
             MessageE.setTextFill(Color.GREEN);
             dangericon.setVisible(false);
 

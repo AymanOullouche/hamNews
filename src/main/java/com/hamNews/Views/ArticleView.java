@@ -30,34 +30,27 @@ public class ArticleView extends Application {
     @Override
     public void start(Stage primaryStage) {
 
+    }
+
+    public VBox ShowArticleView() {
         articleListView = new ArticleListView();
         ArticlePan = articleListView.ShowArticle();
         mainLayout = new VBox(20);
         mainLayout.setPadding(new Insets(20));
         mainLayout.setStyle("-fx-background-color: white");
 
-
-        // Titre de la section
         sectionTitle = new Text("Home");
         sectionTitle.setFont(Font.font("Arial", FontWeight.BOLD, 30));
         sectionTitle.setFill(Color.BLACK);
 
-
         mainLayout.getChildren().addAll(sectionTitle, ArticlePan);
+
         mainLayout.setPadding(new Insets(20));
         mainLayout.setStyle("-fx-background-color: white");
 
+        return mainLayout;
 
-        Scene scene = new Scene(mainLayout, 1150, 550);
-        primaryStage.setTitle("Liste des articles");
-        primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
-
-        Image icon = new Image(getClass().getResource("/com/hamNews/Views/images/ConnectPlease.png").toExternalForm());
-        primaryStage.getIcons().add(icon);
-        primaryStage.show();
     }
-
     public static void openDetailFormWithAnimation(ArticleSelect selectedArticle) {
 
         articleDetailView = new ArticleDetailView(selectedArticle);
@@ -71,11 +64,10 @@ public class ArticleView extends Application {
         transition.play();
 
     }
-
     public static void openListFormWithAnimation() {
         TranslateTransition transition = new TranslateTransition(Duration.seconds(1.5), DetailPan);
         transition.setFromX(0);
-        transition.setToX(1300);
+        transition.setToX(1200);
         transition.setOnFinished(e -> {
             mainLayout.getChildren().clear();
             mainLayout.getChildren().addAll(sectionTitle, ArticlePan);
@@ -84,7 +76,9 @@ public class ArticleView extends Application {
     }
 
 
+
     public static void main(String[] args) {
         launch(args);
     }
 }
+

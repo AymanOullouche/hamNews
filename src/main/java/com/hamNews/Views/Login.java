@@ -1,4 +1,3 @@
-
 package com.hamNews.Views;
 
 import com.hamNews.Controler.UserController;
@@ -19,14 +18,13 @@ import javafx.scene.shape.ArcType;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.control.*;
-import java.io.*;
-import java.util.Properties;
 
 public class Login {
 
     private HBox errorHBox;
     private String MessageErreur;
     private UserController userController = new UserController();
+
 
     public VBox createLoginInterface() {
         Text welcomeText = new Text("Connexion");
@@ -126,11 +124,15 @@ public class Login {
     }
 
     private void openHome() {
+        WindowManager.closeAllWindows();
         System.out.println("Ouverture de l'interface Home...");
-        ArticleListView articleListView = new ArticleListView();
+        Dashboard articleListView = new Dashboard();
         Stage articleListStage = new Stage();
         articleListView.start(articleListStage);
         articleListStage.show();
     }
 
 }
+
+
+

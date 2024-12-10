@@ -2,7 +2,6 @@ package com.hamNews.Controler;
 
 import com.hamNews.Model.Article.Article;
 import com.hamNews.Model.Article.ArticleSelect;
-import com.hamNews.Model.Article.Category;
 import com.hamNews.Model.DB.DatabaseConnection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -14,11 +13,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class ArticleController {
-
-
 
     public List<Article> scrapeArticleGrid(String url, int lastFetchedArticleId) throws IOException {
         List<Article> articles = new ArrayList<>();
@@ -41,7 +37,6 @@ public class ArticleController {
             String description = articleElement.select("a.article-body").text();
             // Extract publish date
             String publishDate = articleElement.select("span.publishing-date").text(); // Moved here
-
 
             // Create a new Article object with publish date
             articles.add(new Article(title, articleUrl, imageUrl, description, publishDate)); // Include publish date
@@ -115,7 +110,6 @@ public class ArticleController {
         }
     }
 
-    // Fetches the full content of an article
     public String fetchContent(String url) throws IOException {
         Document doc = Jsoup.connect(url).get();
         Element contentElement = doc.select("div.article-desc").first();
@@ -126,7 +120,6 @@ public class ArticleController {
             return "No content found for the specified selector."; // Fallback content
         }
     }
-
     public List<ArticleSelect> getArticles() {
         List<ArticleSelect> articles = new ArrayList<>();
         String selectSQL = "SELECT title, description, url, image, categories, publishDate, content, categories FROM Articles";
@@ -156,4 +149,6 @@ public class ArticleController {
 
 
 }
+
+
 

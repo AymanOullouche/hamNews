@@ -27,7 +27,7 @@ import java.util.List;
 public class ArticleListView extends Application {
 
     private List<ArticleSelect> articles = new ArrayList<>();
-    private HBox articlesContainer = new HBox(25);
+    private HBox articlesContainer = new HBox(20);
     private int currentIndex = 0;
     private static final int ARTICLES_PER_ROW = 4;
     private ScrollPane scrollPane;
@@ -224,9 +224,9 @@ public class ArticleListView extends Application {
     }
 
     private void loadArticles() {
-            ArticleController art = new ArticleController();
-            articles = art.getArticles();
-            displayArticles();
+        ArticleController art = new ArticleController();
+        articles = art.getArticles();
+        displayArticles();
     }
 
     private void PaginationButtons() {

@@ -59,10 +59,11 @@ public class AuthentificationBanner {
 
     public Button getSignup(){
 
+
         return signUpButton;
     }
-    public Button getLogin(){
+     public Button getLogin(){
 
         return LoginBtton;
-    }
+     }
 }

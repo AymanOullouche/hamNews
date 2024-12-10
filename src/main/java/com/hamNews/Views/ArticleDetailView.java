@@ -27,7 +27,7 @@ public class ArticleDetailView extends Application {
     private ArticleContent content  ;
     private Category category ;
 
-    private HBox  articlesContainer  = new HBox(25);
+    private HBox  articlesContainer  = new HBox(20);
     private int currentIndex = 0;
     private static final int ARTICLES_PER_ROW = 3;
     private ScrollPane scrollPane;

@@ -58,8 +58,4 @@ public class NewsScraperTask extends Task<Void> {
         }
         return null;
     }
-
-    public ArticleController getArticleController() {
-        return this.articleController;
-    }
 }
