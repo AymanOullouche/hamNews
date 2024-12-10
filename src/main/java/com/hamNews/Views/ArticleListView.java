@@ -30,22 +30,22 @@ import javafx.stage.Stage;
 public class ArticleListView extends Application {
     DownloadController downloadController = new DownloadController();
 
-    private List<ArticleSelect> articles = new ArrayList<>();
-    private HBox articlesContainer = new HBox(25);
-    private int currentIndex = 0; // Indice des articles chargés
-    private static final int ARTICLES_PER_ROW = 4; // Nombre d'articles à afficher par ligne
-    private ScrollPane scrollPane;
+    public static List<ArticleSelect> articles = new ArrayList<>();
+    public static HBox articlesContainer = new HBox(25);
+    public static int currentIndex = 0; // Indice des articles chargés
+    public static final int ARTICLES_PER_ROW = 4; // Nombre d'articles à afficher par ligne
+    public static ScrollPane scrollPane;
 
-    private Button readMoreButton;
-    private Button likeButton;
-    private Button downloadButton;
-    private User theUser;
+    public static Button readMoreButton;
+    public static Button likeButton;
+    public static Button downloadButton;
+    public static User theUser;
 
     @Override
     public void start(Stage primaryStage) {
     }
 
-    private void displayArticles() {
+    public static void displayArticles() {
         theUser = Session.getLoggedInUser();
         articlesContainer.setAlignment(Pos.CENTER);
         articlesContainer.setStyle("-fx-background-color: white; -fx-padding: 15;");
@@ -93,17 +93,19 @@ public class ArticleListView extends Application {
 
             downloadButton.setMinSize(40, 40);
 
-            Image IconI = new Image(getClass().getResource("/com/hamNews/Views/images/Like.png").toExternalForm());
-            ImageView ImageIcon = new ImageView(IconI);
-            ImageIcon.setFitWidth(20);
-            ImageIcon.setFitHeight(20);
-            likeButton.setGraphic(ImageIcon);
+            // Image IconI = new
+            // Image(getClass().getResource("/com/hamNews/Views/images/Like.png").toExternalForm());
+            // ImageView ImageIcon = new ImageView(IconI);
+            // ImageIcon.setFitWidth(20);
+            // ImageIcon.setFitHeight(20);
+            // likeButton.setGraphic(ImageIcon);
 
-            Image IconD = new Image(getClass().getResource("/com/hamNews/Views/images/Donwload.png").toExternalForm());
-            ImageView downloadIcon = new ImageView(IconD);
-            downloadIcon.setFitHeight(20);
-            downloadIcon.setFitWidth(20);
-            downloadButton.setGraphic(downloadIcon);
+            // // Image IconD = new
+            // Image(getClass().getResource("/com/hamNews/Views/images/Donwload.png").toExternalForm());
+            // ImageView downloadIcon = new ImageView(IconD);
+            // downloadIcon.setFitHeight(20);
+            // downloadIcon.setFitWidth(20);
+            // downloadButton.setGraphic(downloadIcon);
 
             readMoreButton = new Button("Read More");
             readMoreButton
@@ -112,6 +114,8 @@ public class ArticleListView extends Application {
 
             likeButton.setOnAction(e -> {
                 System.out.println("Liked article: " + article.getTitle());
+                // displayFilteredArticlesByTitle("Donald");
+                displayFilteredArticlesByCategory("automobile");
 
             });
 
@@ -119,18 +123,20 @@ public class ArticleListView extends Application {
                 if (theUser == null) {
 
                     openBienvenue();
-                } else {
-                    article.setDownloaded(!article.isDownloaded());
-                    if (article.isDownloaded()) {
-                        downloadIcon.setImage(new Image(
-                                getClass().getResource("/com/hamNews/Views/images/Remove.png").toExternalForm()));
-                    } else {
-                        downloadIcon.setImage(new Image(
-                                getClass().getResource("/com/hamNews/Views/images/Download.png").toExternalForm()));
-                    }
-                    System.out.println("Article " + article.getUrl() + " "
-                            + (article.isDownloaded() ? "saved for" : "removed from") + " offline reading");
                 }
+                // else {
+                // article.setDownloaded(!article.isDownloaded());
+                // if (article.isDownloaded()) {
+                // downloadIcon.setImage(new Image(
+                // getClass().getResource("/com/hamNews/Views/images/Remove.png").toExternalForm()));
+                // } else {
+                // downloadIcon.setImage(new Image(
+                // getClass().getResource("/com/hamNews/Views/images/Download.png").toExternalForm()));
+                // }
+                // System.out.println("Article " + article.getUrl() + " "
+                // + (article.isDownloaded() ? "saved for" : "removed from") + " offline
+                // reading");
+                // }
             });
 
             readMoreButton.setOnAction(e -> {
@@ -202,7 +208,7 @@ public class ArticleListView extends Application {
         }
     }
 
-    public void openBienvenue() {
+    public static void openBienvenue() {
         System.out.println("Ouverture de l'interface Home...");
 
         Bienvenue bienvenue = new Bienvenue();
@@ -218,31 +224,31 @@ public class ArticleListView extends Application {
     }
 
     // Filter articles by title
-    public List<ArticleSelect> filterArticlesByTitle(String titleSubstring) {
+    public static List<ArticleSelect> filterArticlesByTitle(String titleSubstring) {
         return articles.stream()
                 .filter(article -> article.getTitle().toLowerCase().contains(titleSubstring.toLowerCase()))
                 .collect(Collectors.toList());
     }
 
     // Filter articles by category
-    public List<ArticleSelect> filterArticlesByCategory(String category) {
+    public static List<ArticleSelect> filterArticlesByCategory(String category) {
         return articles.stream()
                 .filter(article -> article.getCategorie().equalsIgnoreCase(category))
                 .collect(Collectors.toList());
     }
 
-    public void displayFilteredArticlesByTitle(String titleSubstring) {
+    public static void displayFilteredArticlesByTitle(String titleSubstring) {
         List<ArticleSelect> filteredArticles = filterArticlesByTitle(titleSubstring);
         displayFilteredArticles(filteredArticles);
     }
 
-    public void displayFilteredArticlesByCategory(String category) {
+    public static void displayFilteredArticlesByCategory(String category) {
         List<ArticleSelect> filteredArticles = filterArticlesByCategory(category);
         displayFilteredArticles(filteredArticles);
     }
 
     // Display filtered articles with pagination
-    private void displayFilteredArticles(List<ArticleSelect> filteredArticles) {
+    public static void displayFilteredArticles(List<ArticleSelect> filteredArticles) {
         articles = filteredArticles;
         currentIndex = 0; // Reset to the first page of the filtered articles
         displayArticles();

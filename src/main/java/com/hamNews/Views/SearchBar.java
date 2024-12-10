@@ -46,6 +46,8 @@ public class SearchBar {
             String query = searchBar.getText();
             if (!query.isEmpty()) {
                 System.out.println("Mouse Clicked: Searching for " + query);
+                ArticleListView.displayFilteredArticlesByTitle(query);
+
                 // Add your search logic here
             } else {
                 System.out.println("Mouse Clicked: Search bar is empty.");
