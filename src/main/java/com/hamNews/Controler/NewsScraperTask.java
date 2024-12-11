@@ -52,7 +52,6 @@ public class NewsScraperTask extends Task<Void> {
                     }
                 }
             } catch (IOException e) {
-                System.out.println("Error fetching articles for category: " + category);
                 System.out.println(e.getMessage());
             }
         }

@@ -45,7 +45,6 @@ public class SearchBar {
         searchButton.setOnMouseClicked(event -> {
             String query = searchBar.getText();
             if (!query.isEmpty()) {
-                System.out.println("Mouse Clicked: Searching for " + query);
                 ArticleListView.displayFilteredArticlesByTitle(query);
 
                 // Add your search logic here
@@ -59,10 +58,9 @@ public class SearchBar {
             if (event.getCode() == KeyCode.ENTER) {
                 String query = searchBar.getText();
                 if (!query.isEmpty()) {
-                    System.out.println("Enter Pressed: Searching for " + query);
-                    // Add your search logic here
+                    ArticleListView.displayFilteredArticlesByTitle(query);
                 } else {
-                    System.out.println("Enter Pressed: Search bar is empty.");
+                    ArticleListView.displayArticles();
                 }
             }
         });
@@ -83,7 +81,7 @@ public class SearchBar {
             return imageView;
         } catch (Exception e) {
             System.out.println("Image not found: " + path);
-            return new ImageView(); // Empty placeholder
+            return new ImageView();
         }
     }
 }

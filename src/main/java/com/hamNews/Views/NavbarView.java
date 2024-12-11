@@ -61,14 +61,10 @@ public class NavbarView extends HBox {
         String searchText = searchField.getText();
 
         searchField.clear();
-        // Implement search logic here
-        System.out.println("Searching for: " + searchText);
     }
 
     // Method to handle refresh action
     private void handleRefresh() {
         searchField.clear();
-        System.out.println("Search field cleared and refreshed.");
-        // Optionally, add other refresh-related actions here
     }
 }

@@ -26,6 +26,7 @@ com/hamNews/Views/Bienvenue.class
 com/hamNews/Controler/NewsScraperTask.class
 com/hamNews/Model/DB/DatabaseConnection.class
 com/hamNews/Model/Article/ArticleContent.class
+com/hamNews/Views/OfflineNews.class
 com/hamNews/Views/Account.class
 com/hamNews/Views/ArticleDetailView.class
 com/hamNews/Model/User/User.class

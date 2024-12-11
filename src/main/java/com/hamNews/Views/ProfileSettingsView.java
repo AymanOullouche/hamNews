@@ -1,19 +1,27 @@
 package com.hamNews.Views;
 
-import com.hamNews.Controler.UserController;
-import com.hamNews.Model.User.User;
-import com.hamNews.Model.DB.Session;
-import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-//import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.hamNews.Controler.UserController;
+import com.hamNews.Model.DB.Session;
+import com.hamNews.Model.User.User;
+
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Control;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class ProfileSettingsView extends Application {
     private List<String> favoriteCategories = new ArrayList<>();
@@ -38,7 +46,7 @@ public class ProfileSettingsView extends Application {
         mainContainer.setStyle("-fx-background-color: #ffffff;");
 
         // Title
-        Label titleLabel = new Label("Profil et paramètres");
+        Label titleLabel = new Label("Profile et paramètres");
         titleLabel.setStyle("-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #000;");
         titleLabel.setAlignment(Pos.CENTER);
 
@@ -102,7 +110,7 @@ public class ProfileSettingsView extends Application {
         profileCard.setPadding(new Insets(20));
         profileCard.setStyle(getCardStyle());
 
-        Label titleLabel = new Label("Profil d'utilisateur");
+        Label titleLabel = new Label("Profile d'utilisateur");
         styleTitleLabel(titleLabel);
 
         VBox profileContent = new VBox(15);

@@ -45,7 +45,7 @@ public class UserController {
 
             return rowsAffected > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.getMessage();
             return false;
         }
     }
@@ -63,7 +63,7 @@ public class UserController {
 
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.getMessage();
             return false;
         }
     }
@@ -92,7 +92,7 @@ public class UserController {
             return results.length > 0; // Return true if updates were executed
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.getMessage();
             return false;
         }
     }
@@ -123,7 +123,7 @@ public class UserController {
                 System.out.println("No user found with userId: " + userId);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.getMessage();
         }
         return categories;
     }
@@ -151,7 +151,7 @@ public class UserController {
             // Vérifier si une ligne a été affectée
             return rowsAffected > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.getMessage();
         }
         return false;
     }
@@ -180,7 +180,7 @@ public class UserController {
                 return null;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.getMessage();
             return null;
         }
     }
@@ -204,7 +204,7 @@ public class UserController {
             }
             return hexString.toString();
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            e.getMessage();
             return null;
         }
     }
@@ -217,7 +217,7 @@ public class UserController {
         try (FileOutputStream fos = new FileOutputStream(CONFIG_FILE)) {
             properties.store(fos, null);
         } catch (IOException e) {
-            e.printStackTrace();
+            e.getMessage();
         }
     }
 
@@ -229,7 +229,7 @@ public class UserController {
             try {
                 file.createNewFile();
             } catch (IOException e) {
-                e.printStackTrace();
+                e.getMessage();
             }
             return;
         }
@@ -244,7 +244,7 @@ public class UserController {
                 rememberMeCheckBox.setSelected(true);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            e.getMessage();
         }
     }
 

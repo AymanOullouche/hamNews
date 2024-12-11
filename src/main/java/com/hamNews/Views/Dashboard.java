@@ -2,7 +2,7 @@ package com.hamNews.Views;
 
 import com.hamNews.Model.DB.Session;
 import com.hamNews.Model.User.User;
-import javafx.animation.PauseTransition;
+
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.scene.Node;
@@ -15,7 +15,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class  Dashboard extends Application {
+public class Dashboard extends Application {
 
     private ArticleView ArticleView;
     private SideBar NewsAggApp;
@@ -28,7 +28,6 @@ public class  Dashboard extends Application {
     private BorderPane mainLayout = new BorderPane();
     private Stage primaryStage;
     private User theUser;
-
 
     @Override
     public void start(Stage primaryStage) {
@@ -45,7 +44,7 @@ public class  Dashboard extends Application {
         NavBar = NewsAggApp.AfficherNavBar();
         SearchBar = sideBar.ShowSideBar();
         WindowManager.addWindow(primaryStage);
-        if (theUser!=null){
+        if (theUser != null) {
 
             profil = new ProfileSettingsView();
 
@@ -53,14 +52,13 @@ public class  Dashboard extends Application {
 
             NewsAggApp.getProfileButton().setOnAction(e -> openInterfaceWithAnimation(profileSettings));
             NewsAggApp.getHomeButton().setOnAction(e -> openInterfaceWithAnimation(Articleview));
-            NewsAggApp.getLogoutButton().setOnAction(e -> SeDeconnecter());}
-        if(theUser==null){
-
-            openBienvenue();
-
+            NewsAggApp.getLogoutButton().setOnAction(e -> SeDeconnecter());
         }
+        // if (theUser == null) {
 
+        // openBienvenue();
 
+        // }
 
         // Configuration du layout principal
         mainLayout.setTop(SearchBar);
@@ -68,7 +66,7 @@ public class  Dashboard extends Application {
         mainLayout.setCenter(Articleview);
 
         Scene scene = new Scene(mainLayout);
-        primaryStage.setFullScreen(true);
+        primaryStage.setMaximized(true);
 
         primaryStage.setTitle("Dashboard");
         primaryStage.setScene(scene);
@@ -76,7 +74,6 @@ public class  Dashboard extends Application {
         Image icon = new Image(getClass().getResource("/com/hamNews/Views/images/ConnectPlease.png").toExternalForm());
         primaryStage.getIcons().add(icon);
         primaryStage.show();
-
 
     }
 
@@ -100,26 +97,27 @@ public class  Dashboard extends Application {
 
     private void openLogin() {
         primaryStage.close();
-        System.out.println("Ouverture de l'interface Authentification...");
         Authentification authentification = new Authentification();
         Stage loginStage = new Stage();
         authentification.start(loginStage);
         loginStage.show();
     }
-    public void openBienvenue() {
-        System.out.println("Ouverture de l'interface Home après 10 secondes...");
 
-        PauseTransition pause = new PauseTransition(Duration.seconds(10));
+    // public void openBienvenue() {
+    // System.out.println("Ouverture de l'interface Home après 10 secondes...");
 
-        pause.setOnFinished(event -> {
-            Bienvenue bienvenue = new Bienvenue();
-            Stage bienvenueStage = new Stage();
-            bienvenue.start(bienvenueStage);
-            bienvenueStage.show();
-        });
+    // PauseTransition pause = new PauseTransition(Duration.seconds(10));
 
-        pause.play();
-    }
+    // pause.setOnFinished(event -> {
+    // Bienvenue bienvenue = new Bienvenue();
+    // Stage bienvenueStage = new Stage();
+    // bienvenue.start(bienvenueStage);
+    // bienvenueStage.show();
+    // });
+
+    // pause.play();
+    // }
+
     public static void main(String[] args) {
         launch(args);
     }

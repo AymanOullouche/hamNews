@@ -1,18 +1,26 @@
 package com.hamNews.Controler;
 
-import com.hamNews.Model.Article.Article;
-import com.hamNews.Model.Article.ArticleSelect;
-import com.hamNews.Model.DB.DatabaseConnection;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
+import com.hamNews.Model.Article.Article;
+import com.hamNews.Model.Article.ArticleSelect;
+import com.hamNews.Model.DB.DatabaseConnection;
 
 public class ArticleController {
 
@@ -33,13 +41,15 @@ public class ArticleController {
             }
             // Extract image URL
             String imageUrl = articleElement.select("div.article-image img").attr("data-src");
+            // Convert the image to PNG and save it
+            String imageName = saveImageAsPng(imageUrl);
             // Extract description
             String description = articleElement.select("a.article-body").text();
             // Extract publish date
             String publishDate = articleElement.select("span.publishing-date").text(); // Moved here
 
             // Create a new Article object with publish date
-            articles.add(new Article(title, articleUrl, imageUrl, description, publishDate)); // Include publish date
+            articles.add(new Article(title, articleUrl, imageName, description, publishDate)); // Include publish date
         }
 
         return articles;
@@ -64,7 +74,7 @@ public class ArticleController {
         String insertArticleSQL = "INSERT INTO Articles (title, description, content, url, image, categories, publishDate) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(insertArticleSQL)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(insertArticleSQL)) {
 
             preparedStatement.setString(1, article.getTitle());
             preparedStatement.setString(2, article.getDescription());
@@ -83,7 +93,7 @@ public class ArticleController {
     public int getLastFetchedArticleIdByCategory(String category) {
         String selectSQL = "SELECT lastArticleId FROM LastFetchedByCategory WHERE category = ?";
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(selectSQL)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(selectSQL)) {
 
             preparedStatement.setString(1, category);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -99,7 +109,7 @@ public class ArticleController {
     public void updateLastFetchedArticleByCategory(String category, int articleId) {
         String updateSQL = "INSERT INTO LastFetchedByCategory (category, lastArticleId, lastFetchDate) VALUES (?, ?, NOW()) ON DUPLICATE KEY UPDATE lastArticleId = ?";
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(updateSQL)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(updateSQL)) {
 
             preparedStatement.setString(1, category);
             preparedStatement.setInt(2, articleId);
@@ -120,13 +130,14 @@ public class ArticleController {
             return "No content found for the specified selector."; // Fallback content
         }
     }
+
     public List<ArticleSelect> getArticles() {
         List<ArticleSelect> articles = new ArrayList<>();
         String selectSQL = "SELECT title, description, url, image, categories, publishDate, content, categories FROM Articles";
 
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
+                PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+                ResultSet resultSet = preparedStatement.executeQuery()) {
 
             while (resultSet.next()) {
                 String title = resultSet.getString("title");
@@ -147,8 +158,39 @@ public class ArticleController {
         return articles;
     }
 
+    private String getFileNameFromURL(String url) {
+        // Extract the file name from the URL
+        String fileName = url.substring(url.lastIndexOf("/") + 1);
+
+        // Remove the extension if present
+        int dotIndex = fileName.lastIndexOf(".");
+        if (dotIndex != -1) {
+            fileName = fileName.substring(0, dotIndex);
+        }
+
+        return fileName;
+    }
+
+    private String saveImageAsPng(String imageUrl) throws IOException {
+        String imageName = getFileNameFromURL(imageUrl);
+        String uniqueImageName = "image_" + imageName + ".png";
+
+        // Create the save directory if it does not exist
+        Path directoryPath = Paths.get("src/main/resources/com/hamNews/Views/images/");
+        if (!Files.exists(directoryPath)) {
+            Files.createDirectories(directoryPath);
+        }
+
+        // Create the local file path for the image with .png extension
+        Path savePath = Paths.get("src/main/resources/com/hamNews/Views/images/", uniqueImageName);
+
+        // Open an input stream to the image URL and save it to the file
+        try (InputStream in = new URL(imageUrl).openStream()) {
+            Files.copy(in, savePath, StandardCopyOption.REPLACE_EXISTING);
+        }
+
+        // Return the local path to the saved image
+        return uniqueImageName;
+    }
 
 }
-
-
-

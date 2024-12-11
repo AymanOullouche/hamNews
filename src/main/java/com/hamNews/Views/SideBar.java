@@ -23,6 +23,7 @@ public class SideBar extends Application {
     private Button profileButton;
     private Button homeButton;
     private Button logoutButton;
+    private Button offlineButton;
 
     @Override
     public void start(Stage primaryStage) {
@@ -65,9 +66,9 @@ public class SideBar extends Application {
         User theUser = Session.getLoggedInUser();
         if (theUser != null) {
             footer.getChildren().addAll(
-                    createSidebarButton("Offline News", "/com/hamNews/Views/images/Offline.png"),
+                    offlineButton = createSidebarButton("Offline News", "/com/hamNews/Views/images/Offline.png"),
                     profileButton = createSidebarButton("Profile & Settings", "/com/hamNews/Views/images/Profile.png",
-                            "-fx-text-fill: red;"),
+                            "-fx-text-fill: black;"),
                     logoutButton = createSidebarButton("Log Out", "/com/hamNews/Views/images/Logout.png",
                             "-fx-text-fill: red;"));
         }
@@ -101,9 +102,10 @@ public class SideBar extends Application {
                         customStyle);
         button.setMaxWidth(Double.MAX_VALUE);
         button.setOnAction(event -> {
-            System.out.println(text + " button clicked");
             activeCategory = text; // Set active category for handling navigation logic
             if (activeCategory.equals("Home")) {
+
+                ArticleView.sectionTitle.setText("Home");
                 ArticleListView.displayArticles();
             } else {
 

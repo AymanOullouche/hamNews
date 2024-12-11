@@ -1,17 +1,26 @@
 package com.hamNews.Controler;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
 import com.google.gson.Gson;
 import com.hamNews.Model.Article.ArticleSelect;
-
-import java.io.*;
-import java.net.URL;
-import java.nio.file.*;
-// import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class DownloadController {
 
     private static final Logger LOGGER = Logger.getLogger(DownloadController.class.getName());
+
+    // List to store downloaded articles
+    private List<ArticleSelect> downloadedArticles = new ArrayList<>();
 
     /**
      * Downloads the article and saves its data in a JSON file, as well as the image
@@ -37,10 +46,11 @@ public class DownloadController {
             // Log the image path (optional)
             System.out.println("Image saved to: " + localImagePath);
 
-            // Update the icon to "Remove" (You can add logic for button here, e.g., update
-            // button graphic)
-            // Example: updateButtonGraphic("Remove");
+            // Add the article to the list of downloaded articles
+            downloadedArticles.add(article);
 
+            // Update the entire articles list as JSON
+            saveAllArticlesAsJson();
         } else {
             // If the article is not downloaded, revert the download state
             // Example: updateButtonGraphic("Download");
@@ -75,7 +85,34 @@ public class DownloadController {
             writer.write(json);
         }
 
-        System.out.println("Article data saved to: " + jsonFilePath);
+    }
+
+    /**
+     * Saves all downloaded articles into a single JSON file.
+     * 
+     * @throws IOException If an error occurs during the file writing process.
+     */
+    private void saveAllArticlesAsJson() throws IOException {
+        // Serialize the list of all downloaded articles to JSON
+        Gson gson = new Gson();
+        String json = gson.toJson(downloadedArticles); // Convert the list of articles to JSON
+
+        // Create a directory to save the JSON if it doesn't exist
+        String jsonDirectory = "local_articles"; // You can change this directory
+        Path directoryPath = Paths.get(jsonDirectory);
+        if (!Files.exists(directoryPath)) {
+            Files.createDirectories(directoryPath);
+        }
+
+        // Define the file path for the all articles JSON file
+        Path jsonFilePath = Paths.get(jsonDirectory, "all_articles_data.json");
+
+        // Write the JSON data (all articles) to the file
+        try (BufferedWriter writer = Files.newBufferedWriter(jsonFilePath)) {
+            writer.write(json);
+        }
+
+        System.out.println("All articles data saved to: " + jsonFilePath);
     }
 
     /**

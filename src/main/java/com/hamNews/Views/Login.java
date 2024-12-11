@@ -2,8 +2,10 @@ package com.hamNews.Views;
 
 import com.hamNews.Controler.UserController;
 import com.hamNews.Model.User.User;
+
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -17,14 +19,12 @@ import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.scene.control.*;
 
 public class Login {
 
     private HBox errorHBox;
     private String MessageErreur;
     private UserController userController = new UserController();
-
 
     public VBox createLoginInterface() {
         Text welcomeText = new Text("Connexion");
@@ -34,12 +34,14 @@ public class Login {
         TextField emailField = new TextField();
         emailField.setPromptText("Email");
         emailField.setMaxWidth(300);
-        emailField.setStyle("-fx-padding: 10; -fx-border-radius: 5; -fx-background-radius: 5; -fx-border-color: #2980b9; -fx-background-color: #ecf0f1;");
+        emailField.setStyle(
+                "-fx-padding: 10; -fx-border-radius: 5; -fx-background-radius: 5; -fx-border-color: #2980b9; -fx-background-color: #ecf0f1;");
 
         PasswordField passwordField = new PasswordField();
         passwordField.setPromptText("Mot de passe");
         passwordField.setMaxWidth(300);
-        passwordField.setStyle("-fx-padding: 10; -fx-border-radius: 5; -fx-background-radius: 5; -fx-border-color: #2980b9; -fx-background-color: #ecf0f1;");
+        passwordField.setStyle(
+                "-fx-padding: 10; -fx-border-radius: 5; -fx-background-radius: 5; -fx-border-color: #2980b9; -fx-background-color: #ecf0f1;");
 
         CheckBox rememberMeCheckBox = new CheckBox("Se souvenir de moi ");
 
@@ -49,7 +51,7 @@ public class Login {
         MessageE.setTextFill(Color.RED);
         logBtton.setPrefWidth(200);
         logBtton.setOnAction(e -> {
-            handleLogin(emailField, passwordField, rememberMeCheckBox);  // Modification ici pour passer la case à cocher
+            handleLogin(emailField, passwordField, rememberMeCheckBox); // Modification ici pour passer la case à cocher
             MessageE.setText(MessageErreur);
         });
 
@@ -73,12 +75,13 @@ public class Login {
         leftCirclePane.setTranslateY(-53);
         leftCirclePane.setPrefWidth(radius);
 
-        VBox loginFields = new VBox(20, welcomeText, emailField, passwordField, rememberMeCheckBox, logBtton, errorHBox, leftCirclePane);
+        VBox loginFields = new VBox(20, welcomeText, emailField, passwordField, rememberMeCheckBox, logBtton, errorHBox,
+                leftCirclePane);
         loginFields.setAlignment(Pos.CENTER);
         loginFields.setStyle("-fx-background-color: white; -fx-padding: 20;");
         loginFields.setPrefWidth(575);
 
-        userController.loadEmail(emailField,rememberMeCheckBox);
+        userController.loadEmail(emailField, rememberMeCheckBox);
 
         return loginFields;
     }
@@ -125,7 +128,6 @@ public class Login {
 
     private void openHome() {
         WindowManager.closeAllWindows();
-        System.out.println("Ouverture de l'interface Home...");
         Dashboard articleListView = new Dashboard();
         Stage articleListStage = new Stage();
         articleListView.start(articleListStage);
@@ -133,6 +135,3 @@ public class Login {
     }
 
 }
-
-
-

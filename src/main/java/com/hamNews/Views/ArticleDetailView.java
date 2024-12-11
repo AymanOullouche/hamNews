@@ -1,33 +1,30 @@
 package com.hamNews.Views;
 
-import com.hamNews.Model.Article.Article;
+import org.jsoup.Jsoup;
+
 import com.hamNews.Model.Article.ArticleContent;
 import com.hamNews.Model.Article.ArticleSelect;
 import com.hamNews.Model.Article.Category;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.jsoup.Jsoup;
-
 
 public class ArticleDetailView extends Application {
 
     private ArticleSelect article;
-    private ArticleContent content  ;
-    private Category category ;
+    private ArticleContent content;
+    private Category category;
 
-    private HBox  articlesContainer  = new HBox(25);
+    private HBox articlesContainer = new HBox(25);
     private int currentIndex = 0;
     private static final int ARTICLES_PER_ROW = 3;
     private ScrollPane scrollPane;
@@ -37,24 +34,32 @@ public class ArticleDetailView extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {}
+    public void start(Stage primaryStage) {
+    }
 
     private String htmlToPlainText(String html) {
         return Jsoup.parse(html).text();
     }
+
     private void displayArticles() {
 
         articlesContainer.setAlignment(Pos.CENTER);
         articlesContainer.setPadding(new Insets(20));
         articlesContainer.setStyle("-fx-background-color: white; -fx-padding: 10;");
 
-
         VBox card = new VBox(5);
         card.setPadding(new Insets(10));
-        card.setStyle("-fx-background-color: white; -fx-border-width: 0; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 0);");
+        card.setStyle(
+                "-fx-background-color: white; -fx-border-width: 0; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 0);");
         card.setPrefWidth(1000);
 
-        ImageView imageView = new ImageView(new Image(article.getImageUrl()));
+        // ImageView imageView = new ImageView(new Image(article.getImageUrl()));
+        Image icon = new Image(
+                getClass().getResource("/com/hamNews/Views/images/" + article.getImageUrl()).toExternalForm());
+        ImageView imageView = new ImageView(icon);
+        // connectImageView.setFitWidth(150);
+        // connectImageView.setFitHeight(100);
+        // connectImageView.setPreserveRatio(true);
         imageView.setFitWidth(500);
         imageView.setFitHeight(300);
         imageView.setPreserveRatio(true);
@@ -92,7 +97,7 @@ public class ArticleDetailView extends Application {
         titleSection.getChildren().addAll(titleWithRemove, categoryDate, snippet);
 
         HBox imageTitleSection = new HBox(20);
-        imageTitleSection.getChildren().addAll(imageView,titleSection);
+        imageTitleSection.getChildren().addAll(imageView, titleSection);
 
         Label contenu = new Label(htmlToPlainText(article.getContent()));
         contenu.setWrapText(true);
@@ -104,7 +109,6 @@ public class ArticleDetailView extends Application {
         });
         card.getChildren().addAll(imageTitleSection, contenu);
         articlesContainer.getChildren().add(card);
-
 
     }
 
