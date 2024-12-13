@@ -55,7 +55,7 @@ public class ArticleDetailView extends Application {
 
         // ImageView imageView = new ImageView(new Image(article.getImageUrl()));
         Image icon = new Image(
-                getClass().getResource("/com/hamNews/Views/images/" + article.getImageUrl()).toExternalForm());
+                getClass().getResource("/com/hamNews/Views/images/" + article.getImageName()).toExternalForm());
         ImageView imageView = new ImageView(icon);
         // connectImageView.setFitWidth(150);
         // connectImageView.setFitHeight(100);

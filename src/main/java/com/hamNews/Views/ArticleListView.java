@@ -66,8 +66,9 @@ public class ArticleListView extends Application {
         card.setPrefWidth(100);
         card.setPrefHeight(360);
 
-        Image image = loadImage(article.getImageUrl());
+        Image image = loadImage(article.getImageName());
         ImageView imageView = new ImageView(image);
+        imageView.resize(300, 212);
         imageView.setFitWidth(232);
         imageView.setFitHeight(80);
         imageView.setPreserveRatio(true);
@@ -264,6 +265,7 @@ public class ArticleListView extends Application {
     }
 
     private static void downloadArticle(ArticleSelect article) {
+        System.out.println("I'm downloading");
         if (theUser == null) {
             openBienvenue();
         } else {

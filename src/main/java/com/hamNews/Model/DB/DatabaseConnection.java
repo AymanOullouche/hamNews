@@ -17,7 +17,8 @@ public class DatabaseConnection {
 
     public static Connection getConnection() throws SQLException {
         String dbUser = System.getenv("DB_USER");
-        System.out.println("DB User: " + dbUser); // This should print the value of DB_USER
+        // System.out.println("DB User: " + dbUser); // This should print the value of
+        // DB_USER
 
         return DriverManager.getConnection(DB_URL, USER, PASSWORD);
     }

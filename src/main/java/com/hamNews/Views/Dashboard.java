@@ -32,6 +32,7 @@ public class Dashboard extends Application {
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
+        primaryStage.setMaximized(true);
         theUser = Session.getLoggedInUser();
         ArticleView = new ArticleView();
         NewsAggApp = new SideBar();

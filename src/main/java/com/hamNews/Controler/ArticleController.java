@@ -13,6 +13,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.net.URL;
+import java.nio.file.*;
+
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -49,7 +56,8 @@ public class ArticleController {
             String publishDate = articleElement.select("span.publishing-date").text(); // Moved here
 
             // Create a new Article object with publish date
-            articles.add(new Article(title, articleUrl, imageName, description, publishDate)); // Include publish date
+            articles.add(new Article(title, articleUrl, imageUrl, description, publishDate, imageName)); // Include
+                                                                                                         // publish date
         }
 
         return articles;
@@ -71,7 +79,7 @@ public class ArticleController {
     }
 
     public void storeArticle(Article article, String content, String category) {
-        String insertArticleSQL = "INSERT INTO Articles (title, description, content, url, image, categories, publishDate) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String insertArticleSQL = "INSERT INTO Articles (title, description, content, url, image, categories, imageName) VALUES (?, ?, ?, ?, ?,  ?, ?)";
 
         try (Connection connection = DatabaseConnection.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(insertArticleSQL)) {
@@ -82,7 +90,8 @@ public class ArticleController {
             preparedStatement.setString(4, article.getUrl());
             preparedStatement.setString(5, article.getImageUrl());
             preparedStatement.setString(6, category);
-            preparedStatement.setString(7, article.getPublishDate()); // Now taken from Article
+//            preparedStatement.setString(7, );
+            preparedStatement.setString(7, article.getImageName());
             preparedStatement.executeUpdate();
             System.out.println("Article stored successfully: " + article.getTitle());
         } catch (SQLException e) {
@@ -133,7 +142,7 @@ public class ArticleController {
 
     public List<ArticleSelect> getArticles() {
         List<ArticleSelect> articles = new ArrayList<>();
-        String selectSQL = "SELECT title, description, url, image, categories, publishDate, content, categories FROM Articles";
+        String selectSQL = "SELECT title, description, url, image, categories, publishDate, content, categories, imageName FROM Articles";
 
         try (Connection connection = DatabaseConnection.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
@@ -147,8 +156,10 @@ public class ArticleController {
                 String category = resultSet.getString("categories");
                 String content = resultSet.getString("content");
                 String publishDate = resultSet.getString("publishDate");
+                String imageName = resultSet.getString("imageName");
 
-                articles.add(new ArticleSelect(title, url, image, description, publishDate, content, category));
+                articles.add(
+                        new ArticleSelect(title, url, image, description, publishDate, content, category, imageName));
 
             }
         } catch (SQLException e) {
@@ -171,26 +182,98 @@ public class ArticleController {
         return fileName;
     }
 
-    private String saveImageAsPng(String imageUrl) throws IOException {
-        String imageName = getFileNameFromURL(imageUrl);
-        String uniqueImageName = "image_" + imageName + ".png";
+//    private String saveImageAsPng(String imageUrl) throws IOException {
+//        String imageName = getFileNameFromURL(imageUrl);
+//        String uniqueImageName = "image_" + imageName + ".png";
+//
+//        // Create the save directory if it does not exist
+//        Path directoryPath = Paths.get("src/main/resources/com/hamNews/Views/images/");
+//        if (!Files.exists(directoryPath)) {
+//            Files.createDirectories(directoryPath);
+//        }
+//
+//        // Create the local file path for the image with .png extension
+//        Path savePath = Paths.get("src/main/resources/com/hamNews/Views/images/", uniqueImageName);
+//
+//        // Open an input stream to the image URL and save it to the file
+//        try (InputStream in = new URL(imageUrl).openStream()) {
+//            Files.copy(in, savePath, StandardCopyOption.REPLACE_EXISTING);
+//        }
+//
+//        // Return the local path to the saved image
+//        return uniqueImageName;
+//    }
+public String saveImageAsPng(String imageUrl) throws IOException {
+    String imageName = getFileNameFromURL(imageUrl);
+    String uniqueImageName = "image_" + imageName + ".png";
 
-        // Create the save directory if it does not exist
-        Path directoryPath = Paths.get("src/main/resources/com/hamNews/Views/images/");
-        if (!Files.exists(directoryPath)) {
-            Files.createDirectories(directoryPath);
-        }
-
-        // Create the local file path for the image with .png extension
-        Path savePath = Paths.get("src/main/resources/com/hamNews/Views/images/", uniqueImageName);
-
-        // Open an input stream to the image URL and save it to the file
-        try (InputStream in = new URL(imageUrl).openStream()) {
-            Files.copy(in, savePath, StandardCopyOption.REPLACE_EXISTING);
-        }
-
-        // Return the local path to the saved image
-        return uniqueImageName;
+    // Create the save directory if it does not exist
+    Path directoryPath = Paths.get("src/main/resources/com/hamNews/Views/images/");
+    if (!Files.exists(directoryPath)) {
+        Files.createDirectories(directoryPath);
     }
+
+    // Create the local file path for the image with .png extension
+    Path savePath = Paths.get("src/main/resources/com/hamNews/Views/images/", uniqueImageName);
+
+    // Open an input stream to the image URL and read it into a BufferedImage
+    BufferedImage originalImage = null;
+    try (InputStream in = new URL(imageUrl).openStream()) {
+        originalImage = ImageIO.read(in); // ImageIO will now support WebP if TwelveMonkeys is added
+    }
+
+    // Check if the image was successfully loaded
+    if (originalImage == null) {
+        throw new IOException("Failed to load image from URL: " + imageUrl);
+    }
+
+    // Calculate the new height to maintain the aspect ratio
+    int newWidth = 400;
+    int newHeight = (int) ((double) originalImage.getHeight() / originalImage.getWidth() * newWidth);
+
+    // Resize the image
+    Image scaledImage = originalImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+    BufferedImage resizedImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2d = resizedImage.createGraphics();
+    g2d.drawImage(scaledImage, 0, 0, null);
+    g2d.dispose();
+
+    // Save the resized image as PNG
+    ImageIO.write(resizedImage, "PNG", savePath.toFile());
+
+    // Return the local path to the saved image
+    return uniqueImageName;
+}
+
+    public static void convertWebPToPng(String webpUrl, String outputPath) throws IOException {
+        // Download the WebP image
+        InputStream in = new URL(webpUrl).openStream();
+        File tempFile = File.createTempFile("tempImage", ".webp");
+        try (OutputStream out = new FileOutputStream(tempFile)) {
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = in.read(buffer)) > 0) {
+                out.write(buffer, 0, length);
+            }
+        }
+
+        // Use ProcessBuilder to call cwebp to convert the WebP to PNG
+        ProcessBuilder processBuilder = new ProcessBuilder("cwebp", tempFile.getAbsolutePath(), "-o", outputPath);
+        processBuilder.redirectErrorStream(true);
+        Process process = processBuilder.start();
+
+        try {
+            int exitCode = process.waitFor();
+            if (exitCode != 0) {
+                throw new IOException("Error during WebP to PNG conversion. Exit code: " + exitCode);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            throw new IOException("Error during WebP to PNG conversion", e);
+        } finally {
+            tempFile.delete();
+        }
+    }
+
 
 }

@@ -11,7 +11,7 @@ public class Main extends Application {
     @Override
     public void start(@SuppressWarnings("exports") Stage primaryStage) {
 
-        // startScraping();
+        startScraping();
         openDashboard();
     }
 

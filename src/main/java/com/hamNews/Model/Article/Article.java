@@ -6,10 +6,15 @@ public class Article {
     private final String imageUrl;
     private final String description;
     private final String publishDate;
+    private final String imageName;
 
+    public String getImageName() {
+        return imageName;
+    }
 
-
-    public Article(String title, String url, String imageUrl, String description,String publishDate) {
+    public Article(String title, String url, String imageUrl, String description, String publishDate,
+            String imageName) {
+        this.imageName = imageName;
         this.title = title;
         this.url = url;
         this.imageUrl = imageUrl;
@@ -43,6 +48,7 @@ public class Article {
                 // ", publishDate='" + publishDate + '\'' +
                 '}';
     }
+
     public String getPublishDate() {
         return publishDate;
     }

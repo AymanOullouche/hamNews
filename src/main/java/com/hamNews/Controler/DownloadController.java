@@ -31,6 +31,7 @@ public class DownloadController {
      *                     process.
      */
     public void downloadArticle(ArticleSelect article) throws IOException {
+        System.out.println("I'm downloading");
         // Mark the article as downloaded
         article.setDownloaded(!article.isDownloaded());
 

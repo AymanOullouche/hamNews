@@ -5,6 +5,7 @@ module com.hamNews.App {
     requires java.sql;
     requires org.jsoup;
     requires com.google.gson;
+    requires  java.desktop;
 
     opens com.hamNews.Views to javafx.fxml;
     opens com.hamNews.Model.Article to com.google.gson;
