@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 public class SideBar extends Application {
 
     private String activeCategory = "";
-    private String currentView = "Home";
+    private String currentView = "Acceuil";
 
     private Button profileButton;
     private Button homeButton;
@@ -35,7 +35,7 @@ public class SideBar extends Application {
 
         Scene scene = new Scene(mainLayout, 800, 600);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Sidebar Example");
+//        primaryStage.setTitle("Sidebar Example");
         primaryStage.show();
     }
 
@@ -48,7 +48,7 @@ public class SideBar extends Application {
         // Categories section
         VBox categorySection = new VBox(10);
         categorySection.getChildren().addAll(
-                homeButton = createSidebarButton("Home", "/com/hamNews/Views/images/home.png"),
+                homeButton = createSidebarButton("Acceuil", "/com/hamNews/Views/images/home.png"),
                 createSidebarButton("Economie", "/com/hamNews/Views/images/Economie.png"),
                 createSidebarButton("Sports", "/com/hamNews/Views/images/Sport.png"),
                 createSidebarButton("Automobile", "/com/hamNews/Views/images/Car.png"),
@@ -66,11 +66,11 @@ public class SideBar extends Application {
         User theUser = Session.getLoggedInUser();
         if (theUser != null) {
             footer.getChildren().addAll(
-                    offlineButton = createSidebarButton("Offline News", "/com/hamNews/Views/images/Offline.png"),
-                    profileButton = createSidebarButton("Profile & Settings", "/com/hamNews/Views/images/Profile.png",
+                    offlineButton = createSidebarButton("HorsLigne Nouvelle", "/com/hamNews/Views/images/Offline.png"),
+                    profileButton = createSidebarButton("Profile & Paramètres", "/com/hamNews/Views/images/Profile.png",
                             "-fx-text-fill: black;"),
-                    logoutButton = createSidebarButton("Log Out", "/com/hamNews/Views/images/Logout.png",
-                            "-fx-text-fill: red;"));
+                    logoutButton = createSidebarButton("Déconnexion", "/com/hamNews/Views/images/Logout.png",
+                            "-fx-text-fill: black;"));
         }
 
         // Add sections to the sidebar
@@ -96,16 +96,17 @@ public class SideBar extends Application {
 
     private Button createSidebarButton(String text, String iconPath, String customStyle) {
         Button button = new Button(text);
-        button.setGraphic(loadImage(iconPath, 20, 20));
+        button.setGraphic(loadImage(iconPath, 25, 25));
         button.setStyle(
                 "-fx-background-color: transparent; -fx-alignment: center-left; -fx-font-size: 14px; " +
                         customStyle);
         button.setMaxWidth(Double.MAX_VALUE);
         button.setOnAction(event -> {
-            activeCategory = text; // Set active category for handling navigation logic
-            if (activeCategory.equals("Home")) {
-
-                ArticleView.sectionTitle.setText("Home");
+            activeCategory = text;
+            if (activeCategory.equals("Acceuil")) {
+                ArticleView.sectionTitle.setText("Acceuil");
+                ArticleListView.currentIndex = 0;
+                ArticleListView.filteredArticles.clear();
                 ArticleListView.displayArticles();
             } else {
 

@@ -35,18 +35,18 @@ public class Login {
         emailField.setPromptText("Email");
         emailField.setMaxWidth(300);
         emailField.setStyle(
-                "-fx-padding: 10; -fx-border-radius: 5; -fx-background-radius: 5; -fx-border-color: #2980b9; -fx-background-color: #ecf0f1;");
+                "-fx-padding: 10; -fx-border-radius: 5; -fx-background-radius: 5; -fx-border-color: #5271ff; -fx-background-color: #ecf0f1;");
 
         PasswordField passwordField = new PasswordField();
         passwordField.setPromptText("Mot de passe");
         passwordField.setMaxWidth(300);
         passwordField.setStyle(
-                "-fx-padding: 10; -fx-border-radius: 5; -fx-background-radius: 5; -fx-border-color: #2980b9; -fx-background-color: #ecf0f1;");
+                "-fx-padding: 10; -fx-border-radius: 5; -fx-background-radius: 5; -fx-border-color: #5271ff; -fx-background-color: #ecf0f1;");
 
         CheckBox rememberMeCheckBox = new CheckBox("Se souvenir de moi ");
 
         Button logBtton = new Button("Se connecter");
-        logBtton.setStyle("-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10;");
+        logBtton.setStyle("-fx-background-color: #5271ff; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10;");
         Label MessageE = new Label("");
         MessageE.setTextFill(Color.RED);
         logBtton.setPrefWidth(200);
@@ -66,7 +66,7 @@ public class Login {
 
         double radius = 50;
         Arc arcWhite = new Arc(0, 0, radius, radius, 90, 180);
-        arcWhite.setFill(Color.web("#2980b9"));
+        arcWhite.setFill(Color.web("#5271ff"));
         arcWhite.setType(ArcType.ROUND);
 
         StackPane leftCirclePane = new StackPane(arcWhite);

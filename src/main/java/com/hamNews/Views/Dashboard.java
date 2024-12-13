@@ -69,7 +69,7 @@ public class Dashboard extends Application {
         Scene scene = new Scene(mainLayout);
         primaryStage.setMaximized(true);
 
-        primaryStage.setTitle("Dashboard");
+        primaryStage.setTitle("HamNews");
         primaryStage.setScene(scene);
 
         Image icon = new Image(getClass().getResource("/com/hamNews/Views/images/ConnectPlease.png").toExternalForm());

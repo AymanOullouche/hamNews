@@ -29,7 +29,7 @@ public class Bienvenue extends Application {
         Scene scene = new Scene(loginPrompt, screenWidth * 0.5, screenHeight * 0.5);
 
         // Scene scene = new Scene(loginPrompt, 1350, 650);
-        primaryStage.setTitle("Interface Principale");
+        primaryStage.setTitle("Authentification");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -50,11 +50,11 @@ public class Bienvenue extends Application {
 
         Text promptText = new Text("Pour continuer à explorer et sauvegarder,\nconnectez-vous !");
         promptText.setFont(Font.font("Arial", 24));
-        promptText.setFill(Color.DODGERBLUE);
+
 
         Button loginButton = new Button("Se connecter");
         loginButton.setStyle(
-                "-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 18; -fx-padding: 10 30;");
+                "-fx-background-color: #5271ff; -fx-text-fill: white; -fx-font-size: 18; -fx-padding: 10 30;");
         loginButton.setOnAction(event -> openLogin());
 
         // Ajouter l'image, le texte et le bouton dans l'ordre souhaité

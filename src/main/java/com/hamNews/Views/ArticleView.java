@@ -22,6 +22,7 @@ public class ArticleView extends Application {
     private static ScrollPane DetailPan;
     public static Text sectionTitle;
     private static VBox mainLayout;
+
     private static ArticleSelect selectedArticle;
 
     @Override
@@ -36,7 +37,7 @@ public class ArticleView extends Application {
         mainLayout.setPadding(new Insets(20));
         mainLayout.setStyle("-fx-background-color: white");
 
-        sectionTitle = new Text("Home");
+        sectionTitle = new Text("Acceuil");
         sectionTitle.setFont(Font.font("Arial", FontWeight.BOLD, 30));
         sectionTitle.setFill(Color.BLACK);
 

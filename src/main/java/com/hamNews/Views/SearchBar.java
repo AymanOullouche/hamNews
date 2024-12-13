@@ -31,14 +31,18 @@ public class SearchBar {
 
         // Search bar
         TextField searchBar = new TextField();
-        searchBar.setPromptText("Search articles...");
+        searchBar.setPromptText("Chercher des Articles...");
         searchBar.setStyle("-fx-background-color: #f5f5f5; -fx-border-radius: 5; -fx-padding: 3;");
+
         searchBar.setPrefWidth(180); // Reduced width
         searchBar.setPrefHeight(28); // Optional: Adjust height
 
         // Search button
-        Button searchButton = new Button("Recherche");
+        Button searchButton = new Button("Rechercher");
         searchButton.setStyle("-fx-background-color: #5271ff; -fx-text-fill: white; -fx-border-radius: 5;");
+
+        searchButton.setOnMouseEntered(e -> searchButton.setStyle("-fx-background-color: #405bb5; -fx-text-fill: white; -fx-border-radius: 5px;"));
+        searchButton.setOnMouseExited(e -> searchButton.setStyle("-fx-background-color: #5271ff; -fx-text-fill: white; -fx-border-radius: 5px;"));
         searchButton.setPadding(new Insets(5, 10, 5, 10)); // Reduced padding for a smaller button
 
         // Search button mouse click event
@@ -47,8 +51,9 @@ public class SearchBar {
             if (!query.isEmpty()) {
                 ArticleListView.displayFilteredArticlesByTitle(query);
 
-                // Add your search logic here
             } else {
+                ArticleListView.filteredArticles.clear();
+                ArticleListView.currentIndex = 0;
                 ArticleListView.displayArticles();
             }
         });
@@ -60,6 +65,8 @@ public class SearchBar {
                 if (!query.isEmpty()) {
                     ArticleListView.displayFilteredArticlesByTitle(query);
                 } else {
+                    ArticleListView.filteredArticles.clear();
+                    ArticleListView.currentIndex = 0;
                     ArticleListView.displayArticles();
                 }
             }

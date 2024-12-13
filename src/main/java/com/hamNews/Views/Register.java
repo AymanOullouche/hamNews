@@ -40,12 +40,12 @@ public class Register {
         nameField = new TextField();
         nameField.setPromptText("Nom");
         nameField.setMaxWidth(300);
-        nameField.setStyle("-fx-padding: 10; -fx-border-radius: 5; -fx-background-radius: 5; -fx-border-color: #2980b9; -fx-background-color: #ecf0f1;");
+        nameField.setStyle("-fx-padding: 10; -fx-border-radius: 5; -fx-background-radius: 5; -fx-border-color: #5271ff; -fx-background-color: #ecf0f1;");
 
         surnameField = new TextField();
         surnameField.setPromptText("Prénom");
         surnameField.setMaxWidth(300);
-        surnameField.setStyle("-fx-padding: 10; -fx-border-radius: 5; -fx-background-radius: 5; -fx-border-color: #2980b9; -fx-background-color: #ecf0f1;");
+        surnameField.setStyle("-fx-padding: 10; -fx-border-radius: 5; -fx-background-radius: 5; -fx-border-color: #5271ff; -fx-background-color: #ecf0f1;");
 
         EmailField = new TextField();
         EmailField.setPromptText("Email");
@@ -63,7 +63,7 @@ public class Register {
         SignUpCPasswordField.setStyle("-fx-padding: 10; -fx-border-radius: 5; -fx-background-radius: 5; -fx-border-color: #2980b9; -fx-background-color: #ecf0f1;");
 
         Button registerButton = new Button("S'inscrire");
-        registerButton.setStyle("-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10;");
+        registerButton.setStyle("-fx-background-color: #5271ff; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10;");
         registerButton.setPrefWidth(200);
 
         Image Danger = new Image(getClass().getResource("/com/hamNews/Views/images/alerte.png").toExternalForm());

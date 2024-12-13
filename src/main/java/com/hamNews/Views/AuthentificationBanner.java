@@ -27,10 +27,10 @@ public class AuthentificationBanner {
 
 
 
-        signUpButton.setStyle("-fx-background-color: white; -fx-text-fill: #2980b9; -fx-font-size: 14px; -fx-padding: 10;");
+        signUpButton.setStyle("-fx-background-color: white; -fx-text-fill: #5271ff; -fx-font-size: 14px; -fx-padding: 10;");
         signUpButton.setPrefWidth(200);
 
-        LoginBtton.setStyle("-fx-background-color: white; -fx-text-fill: #2980b9; -fx-font-size: 14px; -fx-padding: 10;");
+        LoginBtton.setStyle("-fx-background-color: white; -fx-text-fill: #5271ff; -fx-font-size: 14px; -fx-padding: 10;");
         LoginBtton.setPrefWidth(200);
 
 
@@ -52,7 +52,7 @@ public class AuthentificationBanner {
         LoginContainer.setAlignment(Pos.CENTER);
         VBox TotaleContainer = new VBox(100,signUpContainer,LoginContainer);
         TotaleContainer.setAlignment(Pos.CENTER);
-        TotaleContainer.setStyle("-fx-background-color: #2980b9; -fx-padding: 20;");
+        TotaleContainer.setStyle("-fx-background-color: #5271ff; -fx-padding: 20;");
         TotaleContainer.setPrefWidth(575);
         return  TotaleContainer;
     }
