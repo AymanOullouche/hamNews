@@ -4,12 +4,19 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import com.hamNews.Views.Dashboard;
+import com.hamNews.Views.OfflineNews;
 import javafx.application.Platform;
+import javafx.scene.layout.VBox;
 // import javafx.scene.text.Text;
 
 public class ConnectivityController {
 
     private static boolean wasOnline = true; // Track the previous connection status
+
+    private static OfflineNews offlineNews;
+    private static VBox offline ;
+    private static Dashboard d;
     // private static StackPane currentScene; // To update the current scene in
     // JavaFX
 
@@ -38,6 +45,31 @@ public class ConnectivityController {
         }).start();
     }
 
+//    public static void startConnectivityMonitor(Dashboard dashboard) {
+//        d = dashboard; // Store the passed Dashboard instance
+//        new Thread(() -> {
+//            while (true) {
+//                boolean isOnline = isUserOnline();
+//                if (isOnline != wasOnline) {
+//                    // Update UI thread on connectivity change
+//                    Platform.runLater(() -> {
+//                        if (isOnline) {
+//                            showMainPage();
+//                        } else {
+//                            showConnectionLostPage();
+//                        }
+//                    });
+//                    wasOnline = isOnline; // Update the previous status
+//                }
+//                try {
+//                    Thread.sleep(5000); // Check every 5 seconds
+//                } catch (InterruptedException e) {
+//                    e.getMessage();
+//                }
+//            }
+//        }).start();
+//    }
+
     // Check if the user is online by pinging an external server
     private static boolean isUserOnline() {
         try {
@@ -59,6 +91,11 @@ public class ConnectivityController {
 
     // Show the "Connection Lost" page (when the user is offline)
     private static void showConnectionLostPage() {
-        System.out.println("connection lost");
+
+        offlineNews = new OfflineNews();
+        System.out.println("connection lost!");
+        offline = offlineNews.ShowOfflineView();
+        d.openInterfaceWithAnimation(offline);
+
     }
 }

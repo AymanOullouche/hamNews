@@ -22,6 +22,14 @@ public class SideBar extends Application {
 
     private Button profileButton;
     private Button homeButton;
+    private Button sportButton;
+    private Button socialButton;
+    private Button autoButton;
+    private Button jobButton;
+    private Button economyButton;
+    private Button worldButton;
+
+
     private Button logoutButton;
     private Button offlineButton;
 
@@ -49,12 +57,12 @@ public class SideBar extends Application {
         VBox categorySection = new VBox(10);
         categorySection.getChildren().addAll(
                 homeButton = createSidebarButton("Acceuil", "/com/hamNews/Views/images/home.png"),
-                createSidebarButton("Economie", "/com/hamNews/Views/images/Economie.png"),
-                createSidebarButton("Sports", "/com/hamNews/Views/images/Sport.png"),
-                createSidebarButton("Automobile", "/com/hamNews/Views/images/Car.png"),
-                createSidebarButton("Societe", "/com/hamNews/Views/images/Society.png"),
-                createSidebarButton("Monde", "/com/hamNews/Views/images/World.png"),
-                createSidebarButton("Emploi", "/com/hamNews/Views/images/Work.png"));
+                economyButton =createSidebarButton("Economie", "/com/hamNews/Views/images/Economie.png"),
+               sportButton = createSidebarButton("Sports", "/com/hamNews/Views/images/Sport.png"),
+             autoButton =   createSidebarButton("Automobile", "/com/hamNews/Views/images/Car.png"),
+            socialButton =    createSidebarButton("Societe", "/com/hamNews/Views/images/Society.png"),
+            worldButton =    createSidebarButton("Monde", "/com/hamNews/Views/images/World.png"),
+           jobButton =     createSidebarButton("Emploi", "/com/hamNews/Views/images/Work.png"));
 
         // Ensure categories take available vertical space
         VBox.setVgrow(categorySection, Priority.ALWAYS);
@@ -132,5 +140,33 @@ public class SideBar extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public Button getOfflineButton() {
+        return offlineButton;
+    }
+
+    public Button getSportButton() {
+        return sportButton;
+    }
+
+    public Button getSocialButton() {
+        return socialButton;
+    }
+
+    public Button getAutoButton() {
+        return autoButton;
+    }
+
+    public Button getJobButton() {
+        return jobButton;
+    }
+
+    public Button getEconomyButton() {
+        return economyButton;
+    }
+
+    public Button getWorldButton() {
+        return worldButton;
     }
 }

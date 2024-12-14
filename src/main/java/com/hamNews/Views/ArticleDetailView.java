@@ -106,6 +106,7 @@ public class ArticleDetailView extends Application {
         removeButton.setOnAction(e -> {
             System.out.println("Remove: " + article.getTitle());
             ArticleView.openListFormWithAnimation();
+            OfflineNews.openDownloadFormWithAnimation();
         });
         card.getChildren().addAll(imageTitleSection, contenu);
         articlesContainer.getChildren().add(card);

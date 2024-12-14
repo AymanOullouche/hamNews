@@ -1,8 +1,10 @@
 package com.hamNews.Controler;
 
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,6 +15,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.hamNews.Model.Article.ArticleSelect;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -98,6 +101,27 @@ public class DownloadController {
         }
     }
 
+
+    public List<ArticleSelect> ArticleLoader() {
+        List<ArticleSelect> loadedArticles = new ArrayList<>();
+        Gson gson = new Gson();
+        String jsonDirectory = "local_articles";
+        Path jsonFilePath = Paths.get(jsonDirectory, "all_articles_data.json");
+
+        if (Files.exists(jsonFilePath)) {
+            try (FileReader reader = new FileReader(jsonFilePath.toFile())) {
+                Type listType = new TypeToken<List<ArticleSelect>>() {}.getType();
+                loadedArticles = gson.fromJson(reader, listType);
+                System.out.println("Articles loaded successfully.");
+            } catch (IOException e) {
+                LOGGER.severe("Error loading articles from JSON file: " + e.getMessage());
+            }
+        } else {
+            System.out.println("No articles found to load.");
+        }
+
+        return loadedArticles;
+    }
 
 
     private void saveAllArticlesAsJson() throws IOException {

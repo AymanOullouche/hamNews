@@ -1,5 +1,6 @@
 package com.hamNews;
 
+import com.hamNews.Controler.ConnectivityController;
 import com.hamNews.Controler.NewsScraperTask;
 import com.hamNews.Views.Dashboard;
 
@@ -11,7 +12,12 @@ public class Main extends Application {
     @Override
     public void start(@SuppressWarnings("exports") Stage primaryStage) {
 
+
+
         startScraping();
+
+//        Dashboard d = openDashboard();
+        ConnectivityController.startConnectivityMonitor();
         openDashboard();
     }
 
@@ -32,13 +38,12 @@ public class Main extends Application {
         scraperThread.start();
     }
 
-    private void openDashboard() {
-
-        System.out.println("Ouverture de l'interface Login...");
+    private Dashboard openDashboard() {
         Dashboard Auth = new Dashboard();
         Stage AuthStage = new Stage();
         Auth.start(AuthStage);
         AuthStage.show();
+        return Auth;
     }
 
     public static void main(String[] args) {

@@ -131,6 +131,7 @@ public class Login {
         Dashboard articleListView = new Dashboard();
         Stage articleListStage = new Stage();
         articleListView.start(articleListStage);
+        ArticleListView.loadArticles();
         articleListStage.show();
     }
 

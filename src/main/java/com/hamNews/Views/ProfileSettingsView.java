@@ -46,7 +46,7 @@ public class ProfileSettingsView extends Application {
         mainContainer.setStyle("-fx-background-color: #ffffff;");
 
         // Title
-        Label titleLabel = new Label("Profile et paramètres");
+        Label titleLabel = new Label("Profile et paramétres");
         titleLabel.setStyle("-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #000;");
         titleLabel.setAlignment(Pos.CENTER);
 
@@ -86,7 +86,7 @@ public class ProfileSettingsView extends Application {
             return "Le nom et le prénom ne doivent contenir que des lettres, chiffres, _ ou @.";
         }
 
-        if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+        if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")){
             return "Veuillez entrer une adresse email valide.";
         }
 
@@ -132,7 +132,7 @@ public class ProfileSettingsView extends Application {
         styleLabel(emailLabel);
         TextField emailField = createTextField(email);
 
-        Button saveButton = new Button("Mettre à jour le profil");
+        Button saveButton = new Button("Modifier profil");
         stylePrimaryButton(saveButton);
 
         // Bouton avec vérification et mise à jour
@@ -208,7 +208,7 @@ public class ProfileSettingsView extends Application {
         settingsCard.setStyle(getCardStyle());
 
         // Title of the settings card
-        Label titleLabel = new Label("Paramètres de l'application");
+        Label titleLabel = new Label("Personnalisation de catégories");
         styleTitleLabel(titleLabel); // Apply specific styling for the title
 
         // Settings content
@@ -242,7 +242,7 @@ public class ProfileSettingsView extends Application {
                 favCategoriesLabel,
                 favCategoriesDisplay,
                 categoryComboBox);
-        Button saveButton = new Button("Mettre à jour les catégories");
+        Button saveButton = new Button("Modifier catégories");
         stylePrimaryButton(saveButton);
         saveButton.setOnAction(event -> {
             User loggedInUser = Session.getLoggedInUser();
@@ -324,7 +324,7 @@ public class ProfileSettingsView extends Application {
         styleLabel(passwordGuidelines);
 
         // Bouton pour sauvegarder le nouveau mot de passe
-        Button savePasswordButton = new Button("Mettre à jour le mot_passe");
+        Button savePasswordButton = new Button("Modifier mote passe");
         stylePrimaryButton(savePasswordButton);
 
         // HBox saveButtonContainer = new HBox(savePasswordButton);
@@ -345,13 +345,13 @@ public class ProfileSettingsView extends Application {
 
             // Vérification que le champ n'est pas vide
             if (newPassword.isEmpty()) {
-                showAlert(Alert.AlertType.ERROR, "Error", "Le mot de passe ne peut pas être vide !");
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Le mot de passe ne peut pas être vide !");
                 return;
             }
 
             // Vérification que le mot de passe est complexe
             if (!isPasswordComplex(newPassword)) {
-                showAlert(Alert.AlertType.ERROR, "Error", "Le mot de passe ne répond pas aux exigences!");
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Le mot de passe ne répond pas aux exigences!");
                 return;
             }
 
@@ -404,14 +404,19 @@ public class ProfileSettingsView extends Application {
      * Évalue la force du mot de passe.
      */
     private String evaluatePasswordStrength(String password) {
-        if (password.length() >= 12 && password.matches(".[A-Z].") && password.matches(".[a-z].")
-                && password.matches(".\\d.") && password.matches(".[@#$%^&+=!].")) {
-            return "Strong";
-        } else if (password.length() >= 8 && password.matches(".[A-Z].")
-                && password.matches(".[a-z].") && password.matches(".\\d.")) {
-            return "Medium";
+        if (password.length() >= 8 &&
+                password.matches(".*[A-Z].*") && // At least one uppercase letter
+                password.matches(".*[a-z].*") && // At least one lowercase letter
+                password.matches(".*\\d.*") &&   // At least one digit
+                password.matches(".*[@#$%^&+=!].*")) { // At least one special character
+            return "Fort";
+        } else if (password.length() >= 8 &&
+                password.matches(".*[A-Z].*") &&
+                password.matches(".*[a-z].*") &&
+                password.matches(".*\\d.*")) {
+            return "Moyen";
         } else {
-            return "Weak";
+            return "Faible";
         }
     }
 
@@ -420,11 +425,12 @@ public class ProfileSettingsView extends Application {
      */
     private boolean isPasswordComplex(String password) {
         return password.length() >= 8 &&
-                password.matches(".[A-Z].") &&
-                password.matches(".[a-z].") &&
-                password.matches(".\\d.") &&
-                password.matches(".[@#$%^&+=!].");
+                password.matches(".*[A-Z].*") && // At least one uppercase letter
+                password.matches(".*[a-z].*") && // At least one lowercase letter
+                password.matches(".*\\d.*") &&   // At least one digit
+                password.matches(".*[@#$%^&+=!].*"); // At least one special character
     }
+
 
     /**
      * Renvoie le style pour le label de force du mot de passe.
@@ -509,10 +515,31 @@ public class ProfileSettingsView extends Application {
     }
 
     private void stylePrimaryButton(Button button) {
-        button.setStyle(
-                "-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 8px 16px; -fx-background-radius: 5px;");
-        button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: #0056b3; -fx-text-fill: white;"));
-        button.setOnMouseExited(e -> button.setStyle("-fx-background-color: #007bff; -fx-text-fill: white;"));
+        // Style initial
+        button.setStyle("-fx-background-color: #007bff; " +
+                "-fx-text-fill: white; " +
+                "-fx-font-size: 14px; " +
+                "-fx-padding: 8px 16px; " +
+                "-fx-background-radius: 5px; " +
+                "-fx-pref-width: 160px; " +  // Taille fixe
+                "-fx-pref-height: 12px;");   // Taille fixe
+
+        // Hover : change uniquement la couleur
+        button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: #0056b3; " +
+                "-fx-text-fill: white; " +
+                "-fx-font-size: 14px; " +
+                "-fx-padding: 8px 16px; " +
+                "-fx-background-radius: 5px; " +
+                "-fx-pref-width: 160px; " +
+                "-fx-pref-height: 12px;")); // Taille inchangée
+
+        button.setOnMouseExited(e -> button.setStyle("-fx-background-color: #007bff; " +
+                "-fx-text-fill: white; " +
+                "-fx-font-size: 14px; " +
+                "-fx-padding: 8px 16px; " +
+                "-fx-background-radius: 5px; " +
+                "-fx-pref-width: 160px; " +
+                "-fx-pref-height: 12px;")); // Taille inchangée
     }
 
     private void styleLabel(Label label) {

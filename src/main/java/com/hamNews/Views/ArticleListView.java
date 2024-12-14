@@ -3,11 +3,13 @@ package com.hamNews.Views;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import com.hamNews.Controler.ArticleController;
 import com.hamNews.Controler.DownloadController;
+import com.hamNews.Controler.UserController;
 import com.hamNews.Model.Article.ArticleSelect;
 import com.hamNews.Model.DB.Session;
 import com.hamNews.Model.User.User;
@@ -56,6 +58,7 @@ public class ArticleListView extends Application {
 
     public static void displayArticles() {
         theUser = Session.getLoggedInUser();
+
         articlesContainer.getChildren().clear(); // Clear previous articles
         articlesContainer.setStyle("-fx-background-color: white; -fx-padding: 15;");
 
@@ -251,9 +254,34 @@ public class ArticleListView extends Application {
 
 
 
-    private  void loadArticles() {
+    public static void loadArticles() {
         ArticleController art = new ArticleController();
         articles = art.getArticles();
+
+        if (theUser != null) {
+            System.out.println("I'm running");
+
+            // Get the user's liked categories
+            int userId = theUser.getUserId();
+            List<String> likedCategories = UserController.getUserCategories(userId);
+
+
+            // Filter and sort the articles
+            List<ArticleSelect> likedArticles = articles.stream()
+                    .filter(article -> likedCategories.stream()
+                            .anyMatch(category -> category.trim().equalsIgnoreCase(article.getCategorie().trim())))
+                    .collect(Collectors.toList());
+
+            List<ArticleSelect> nonLikedArticles = articles.stream()
+                    .filter(article -> likedCategories.stream()
+                            .noneMatch(category -> category.trim().equalsIgnoreCase(article.getCategorie().trim())))
+                    .collect(Collectors.toList());
+
+            articles.clear();
+            articles.addAll(likedArticles);
+            articles.addAll(nonLikedArticles);
+        }
+
         displayArticles();
     }
 

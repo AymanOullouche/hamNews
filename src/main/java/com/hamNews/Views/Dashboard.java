@@ -28,7 +28,8 @@ public class Dashboard extends Application {
     private BorderPane mainLayout = new BorderPane();
     private Stage primaryStage;
     private User theUser;
-
+    private OfflineNews offlineNews;
+    private VBox offline ;
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -51,10 +52,21 @@ public class Dashboard extends Application {
 
             profileSettings = profil.getProfileSettings();
 
+            offlineNews = new OfflineNews();
+            offline = offlineNews.ShowOfflineView();
+
             NewsAggApp.getProfileButton().setOnAction(e -> openInterfaceWithAnimation(profileSettings));
+            NewsAggApp.getOfflineButton().setOnAction(e -> openInterfaceWithAnimation(offline));
             NewsAggApp.getHomeButton().setOnAction(e -> openInterfaceWithAnimation(Articleview));
+//            NewsAggApp.getAutoButton().setOnAction(e -> openInterfaceWithAnimation(Articleview));
+//            NewsAggApp.getEconomyButton().setOnAction(e -> openInterfaceWithAnimation(Articleview));
+//            NewsAggApp.getJobButton().setOnAction(e -> openInterfaceWithAnimation(Articleview));
+//            NewsAggApp.getSocialButton().setOnAction(e -> openInterfaceWithAnimation(Articleview));
+//            NewsAggApp.getSportButton().setOnAction(e -> openInterfaceWithAnimation(Articleview));
+//            NewsAggApp.getWorldButton().setOnAction(e -> openInterfaceWithAnimation(Articleview));
             NewsAggApp.getLogoutButton().setOnAction(e -> SeDeconnecter());
         }
+
         // if (theUser == null) {
 
         // openBienvenue();
@@ -104,20 +116,6 @@ public class Dashboard extends Application {
         loginStage.show();
     }
 
-    // public void openBienvenue() {
-    // System.out.println("Ouverture de l'interface Home après 10 secondes...");
-
-    // PauseTransition pause = new PauseTransition(Duration.seconds(10));
-
-    // pause.setOnFinished(event -> {
-    // Bienvenue bienvenue = new Bienvenue();
-    // Stage bienvenueStage = new Stage();
-    // bienvenue.start(bienvenueStage);
-    // bienvenueStage.show();
-    // });
-
-    // pause.play();
-    // }
 
     public static void main(String[] args) {
         launch(args);
