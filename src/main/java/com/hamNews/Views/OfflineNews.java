@@ -107,11 +107,21 @@ public class OfflineNews extends Application {
 
         // Decide whether to use filtered articles or all articles
 
+        if (articles.isEmpty()) {
+            Label noArticlesLabel = new Label("Aucun article a afficher");
+            noArticlesLabel.setStyle("-fx-font-size: 16; -fx-text-fill: gray; -fx-padding: 10;");
+            noArticlesLabel.setAlignment(Pos.CENTER);
+
+            // Add the label to the container
+            articlesContainer.getChildren().add(noArticlesLabel);
+            return; // Exit the method since there are no articles to display
+        }
         // Create a GridPane to arrange the articles in a grid (2 rows, max ARTICLES_PER_ROW / 2 columns)
         GridPane grid = new GridPane();
         grid.setHgap(20); // Set horizontal gap between articles
         grid.setVgap(20); // Set vertical gap between rows
         grid.setAlignment(Pos.CENTER);
+
 
         // Add articles to the grid
         int row = 0;
@@ -218,7 +228,7 @@ public class OfflineNews extends Application {
         return new Image(resourceUrl.toExternalForm());
     }
 
-    public VBox ShowArticle() {
+    public  VBox ShowArticle() {
         loadArticles();
         setupScrollPane();
         setupPaginationButtons();
@@ -299,7 +309,7 @@ public class OfflineNews extends Application {
     }
 
 
-    private void loadArticles() {
+    public static void loadArticles() {
         DownloadController download = new DownloadController();
         articles = download.ArticleLoader();
         if (!articles.isEmpty()) {
@@ -313,6 +323,7 @@ public class OfflineNews extends Application {
 
 
     private static void openArticleDetail(ArticleSelect article) {
+        System.out.println("i'm opening");
         articleDetailView = new ArticleDetailView(article);
         DetailPan = articleDetailView.ShowArticle();
 

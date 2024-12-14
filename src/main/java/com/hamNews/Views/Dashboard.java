@@ -56,7 +56,11 @@ public class Dashboard extends Application {
             offline = offlineNews.ShowOfflineView();
 
             NewsAggApp.getProfileButton().setOnAction(e -> openInterfaceWithAnimation(profileSettings));
-            NewsAggApp.getOfflineButton().setOnAction(e -> openInterfaceWithAnimation(offline));
+            NewsAggApp.getOfflineButton().setOnAction(e ->
+                    {
+                        OfflineNews.loadArticles();
+                        openInterfaceWithAnimation(offline);
+                    });
             NewsAggApp.getHomeButton().setOnAction(e -> openInterfaceWithAnimation(Articleview));
 //            NewsAggApp.getAutoButton().setOnAction(e -> openInterfaceWithAnimation(Articleview));
 //            NewsAggApp.getEconomyButton().setOnAction(e -> openInterfaceWithAnimation(Articleview));

@@ -65,6 +65,16 @@ public class ArticleListView extends Application {
         // Decide whether to use filtered articles or all articles
         List<ArticleSelect> displayList = filteredArticles.isEmpty() ? articles : filteredArticles;
 
+        if (displayList.isEmpty()) {
+            Label noArticlesLabel = new Label("Aucun article a afficher");
+            noArticlesLabel.setStyle("-fx-font-size: 16; -fx-text-fill: gray; -fx-padding: 10;");
+            noArticlesLabel.setAlignment(Pos.CENTER);
+
+            // Add the label to the container
+            articlesContainer.getChildren().add(noArticlesLabel);
+            return; // Exit the method since there are no articles to display
+        }
+
         // Create a GridPane to arrange the articles in a grid (2 rows, max ARTICLES_PER_ROW / 2 columns)
         GridPane grid = new GridPane();
         grid.setHgap(20); // Set horizontal gap between articles
@@ -186,7 +196,9 @@ public class ArticleListView extends Application {
     public VBox ShowArticle() {
         loadArticles();
         setupScrollPane();
-        setupPaginationButtons();
+
+            setupPaginationButtons();
+
 
         mainContainer = new VBox(10);
         mainContainer.getChildren().addAll(scrollPane, paginationContainer);
@@ -207,13 +219,15 @@ public class ArticleListView extends Application {
 
 
     private  void setupPaginationButtons() {
-        nextButton = createPaginationButton("Suivant", e -> changePage(ARTICLES_PER_ROW));
-        previousButton = createPaginationButton("Précedent", e -> changePage(-ARTICLES_PER_ROW));
+            nextButton = createPaginationButton("Suivant", e -> changePage(ARTICLES_PER_ROW));
+            previousButton = createPaginationButton("Précedent", e -> changePage(-ARTICLES_PER_ROW));
 
-        paginationContainer = new HBox(10);
-        paginationContainer.getChildren().addAll(previousButton, nextButton);
-        paginationContainer.setPadding(new Insets(10));
-    }
+            paginationContainer = new HBox(10);
+            paginationContainer.getChildren().addAll(previousButton, nextButton);
+            paginationContainer.setPadding(new Insets(10));
+        }
+
+
 
 
 
@@ -286,7 +300,7 @@ public class ArticleListView extends Application {
     }
 
 
-    private static void openBienvenue() {
+    public static void openBienvenue() {
         Bienvenue bienvenue = new Bienvenue();
         Stage bienvenueStage = new Stage();
         bienvenue.start(bienvenueStage);

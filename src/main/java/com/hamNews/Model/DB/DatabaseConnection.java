@@ -13,7 +13,7 @@ public class DatabaseConnection {
 
     private static final String DB_URL = "jdbc:mysql://localhost:3306/hamnews";
     private static final String USER = "root";
-    private static final String PASSWORD = "";
+    private static final String PASSWORD = "root";
 
     public static Connection getConnection() throws SQLException {
         String dbUser = System.getenv("DB_USER");

@@ -92,10 +92,8 @@ public class ConnectivityController {
     // Show the "Connection Lost" page (when the user is offline)
     private static void showConnectionLostPage() {
 
-        offlineNews = new OfflineNews();
-        System.out.println("connection lost!");
-        offline = offlineNews.ShowOfflineView();
-        d.openInterfaceWithAnimation(offline);
+        System.out.println("connection Lost");
+        OfflineNews.openDownloadFormWithAnimation();
 
     }
 }

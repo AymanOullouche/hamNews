@@ -39,7 +39,11 @@ public class SearchBar {
 
         // Search button
         Button searchButton = new Button("Rechercher");
-        searchButton.setStyle("-fx-background-color: #5271ff; -fx-text-fill: white; -fx-border-radius: 5;");
+
+
+        Button refresh = createActionButton("/com/hamNews/Views/images/refresh.png");
+        searchButton.setStyle("-fx-background-color: #5271ff; -fx-text-fill: white; -fx-border-radius: 5; -fx-cursor: hand;");
+
 
         searchButton.setOnMouseEntered(e -> searchButton.setStyle("-fx-background-color: #405bb5; -fx-text-fill: white; -fx-border-radius: 5px;"));
         searchButton.setOnMouseExited(e -> searchButton.setStyle("-fx-background-color: #5271ff; -fx-text-fill: white; -fx-border-radius: 5px;"));
@@ -57,6 +61,9 @@ public class SearchBar {
                 ArticleListView.displayArticles();
             }
         });
+        refresh.setOnAction(event -> {
+            ArticleListView.loadArticles();
+        });
 
         // Keyboard "Enter" key event for the search bar
         searchBar.setOnKeyPressed(event -> {
@@ -73,12 +80,26 @@ public class SearchBar {
         });
 
         // Add elements to the header
-        header.getChildren().addAll(logo, appName, spacer, searchBar, searchButton);
+        header.getChildren().addAll(logo, appName, spacer, refresh,searchBar, searchButton);
         HBox.setMargin(searchBar, new Insets(0, 0, 0, 20)); // Margin between the spacer and searchBar
 
         return header;
     }
 
+    private static Button createActionButton( String textOrImagePath) {
+        Button button = new Button();
+        button.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-cursor: hand;");
+        button.setMinSize(80, 30);
+//        button.setText("");
+
+        Image icon = new Image(ArticleListView.class.getResource(textOrImagePath).toExternalForm());
+        ImageView iconView = new ImageView(icon);
+        iconView.setFitHeight(30);
+        iconView.setFitWidth(30);
+        button.setGraphic(iconView);
+
+        return button;
+    }
     private ImageView loadImage(String path, double width, double height) {
         try {
             Image img = new Image(getClass().getResource(path).toString());

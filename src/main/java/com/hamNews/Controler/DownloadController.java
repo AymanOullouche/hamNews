@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -113,6 +114,8 @@ public class DownloadController {
                 Type listType = new TypeToken<List<ArticleSelect>>() {}.getType();
                 loadedArticles = gson.fromJson(reader, listType);
                 System.out.println("Articles loaded successfully.");
+
+                Collections.reverse(loadedArticles);
             } catch (IOException e) {
                 LOGGER.severe("Error loading articles from JSON file: " + e.getMessage());
             }

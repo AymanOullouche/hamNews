@@ -47,11 +47,11 @@ public class ArticleDetailView extends Application {
         articlesContainer.setPadding(new Insets(20));
         articlesContainer.setStyle("-fx-background-color: white; -fx-padding: 10;");
 
-        VBox card = new VBox(5);
+        VBox card = new VBox(20);
         card.setPadding(new Insets(10));
         card.setStyle(
                 "-fx-background-color: white; -fx-border-width: 0; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 0);");
-        card.setPrefWidth(1000);
+        card.setPrefWidth(1100);
 
         // ImageView imageView = new ImageView(new Image(article.getImageUrl()));
         Image icon = new Image(
@@ -83,7 +83,7 @@ public class ArticleDetailView extends Application {
 
         HBox categoryDate = new HBox(5);
         Label categoryLabel = new Label(article.getCategorie());
-        categoryLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #666;");
+        categoryLabel.setStyle("-fx-font-size: 15px; -fx-text-fill: #ADD8E6; -fx-font-weight: bold;");
         Label date = new Label(article.getPublishDate());
         date.setStyle("-fx-font-size: 12px; -fx-text-fill: #666;");
 
@@ -99,12 +99,12 @@ public class ArticleDetailView extends Application {
         HBox imageTitleSection = new HBox(20);
         imageTitleSection.getChildren().addAll(imageView, titleSection);
 
-        Label contenu = new Label(htmlToPlainText(article.getContent()));
+        Label contenu = new Label((article.getContent()));
         contenu.setWrapText(true);
-        contenu.setStyle("-fx-font-size: 14px; -fx-text-fill: black;");
+        contenu.setStyle("-fx-font-size: 15px; -fx-text-fill: black;");
 
         removeButton.setOnAction(e -> {
-            System.out.println("Remove: " + article.getTitle());
+
             ArticleView.openListFormWithAnimation();
             OfflineNews.openDownloadFormWithAnimation();
         });

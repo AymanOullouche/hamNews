@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -78,26 +79,30 @@ public class ArticleController {
         }
     }
 
-    public void storeArticle(Article article, String content, String category) {
-        String insertArticleSQL = "INSERT INTO Articles (title, description, content, url, image, categories, imageName) VALUES (?, ?, ?, ?, ?,  ?, ?)";
-
-        try (Connection connection = DatabaseConnection.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(insertArticleSQL)) {
-
-            preparedStatement.setString(1, article.getTitle());
-            preparedStatement.setString(2, article.getDescription());
-            preparedStatement.setString(3, content);
-            preparedStatement.setString(4, article.getUrl());
-            preparedStatement.setString(5, article.getImageUrl());
-            preparedStatement.setString(6, category);
-//            preparedStatement.setString(7, );
-            preparedStatement.setString(7, article.getImageName());
-            preparedStatement.executeUpdate();
-            System.out.println("Article stored successfully: " + article.getTitle());
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
+//    public void storeArticle(Article article, String content, String category) {
+//        String insertArticleSQL = "INSERT INTO Articles (title, description, content, url, image, categories, imageName) VALUES (?, ?, ?, ?, ?,  ?, ?)";
+//
+//        try (Connection connection = DatabaseConnection.getConnection();
+//                PreparedStatement preparedStatement = connection.prepareStatement(insertArticleSQL)) {
+//
+//            preparedStatement.setString(1, article.getTitle());
+//            preparedStatement.setString(2, article.getDescription());
+//            preparedStatement.setString(3, content);
+//            preparedStatement.setString(4, article.getUrl());
+//            preparedStatement.setString(5, article.getImageUrl());
+//            preparedStatement.setString(6, category);
+////            preparedStatement.setString(7, );
+//            preparedStatement.setString(7, article.getImageName());
+//            preparedStatement.executeUpdate();
+//            System.out.println("Article stored successfully: " + article.getTitle());
+//        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
+//        }
+//    }
+private String formatContent(String content) {
+    // Ne pas remplacer si le point est après "M", "Mme", ou "Mlle"
+    return content.replaceAll("(?<!\\b(M|Mme|Mlle))\\.\\s*", ".\n");
+}
 
     public int getLastFetchedArticleIdByCategory(String category) {
         String selectSQL = "SELECT lastArticleId FROM LastFetchedByCategory WHERE category = ?";
@@ -134,9 +139,32 @@ public class ArticleController {
         Element contentElement = doc.select("div.article-desc").first();
 
         if (contentElement != null) {
-            return contentElement.outerHtml(); // Return content as HTML
+            // Extraire le contenu brut
+            String rawContent = contentElement.text();
+            // Appliquer le formatage
+            return formatContent(rawContent);
         } else {
-            return "No content found for the specified selector."; // Fallback content
+            return "No content found for the specified selector.";
+        }
+    }
+    public void storeArticle(Article article, String content, String category) {
+        String formattedContent = formatContent(content); // Formater le contenu
+        String insertArticleSQL = "INSERT INTO Articles (title, description, content, url, image, categories, imageName) VALUES (?, ?, ?, ?, ?,  ?, ?)";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(insertArticleSQL)) {
+
+            preparedStatement.setString(1, article.getTitle());
+            preparedStatement.setString(2, article.getDescription());
+            preparedStatement.setString(3, formattedContent); // Utiliser le contenu formaté
+            preparedStatement.setString(4, article.getUrl());
+            preparedStatement.setString(5, article.getImageUrl());
+            preparedStatement.setString(6, category);
+            preparedStatement.setString(7, article.getImageName());
+            preparedStatement.executeUpdate();
+            System.out.println("Article stored successfully: " + article.getTitle());
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -162,6 +190,7 @@ public class ArticleController {
                         new ArticleSelect(title, url, image, description, publishDate, content, category, imageName));
 
             }
+            Collections.reverse(articles);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
